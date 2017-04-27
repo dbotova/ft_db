@@ -17,30 +17,41 @@ void deserialize_db(t_db *db, char *path)
 	FILE *fp;
 	unsigned int len = file_size(path);
 	unsigned int done = 0;
+	char *name = NULL;
+	char *age = NULL;
+	char *school = NULL;
+	int name_len = 0;
+	int age_len = 0;
+	int school_len = 0;
 
+	asprintf(&path, "%s%s", "./storage/", path);
 	fp = fopen(path, "rb");
+	if (!fp)
+		perror("deserialize_db: ");
 	while (done < len)
 	{
 		// read the sizes of fields
-		fread(&db->name_len, sizeof(int), 1, fp);
-		fread(&db->age_len, sizeof(int), 1, fp);
-		fread(&db->school_len, sizeof(int), 1, fp);
+		fread(&name_len, sizeof(int), 1, fp);
+		fread(&age_len, sizeof(int), 1, fp);
+		fread(&school_len, sizeof(int), 1, fp);
 
 		//allocate memory
-		db->name = (char *)malloc(sizeof(char) * db->name_len + 1);
-		db->age = (char *)malloc(sizeof(char) * db->age_len + 1);
-		db->school = (char *)malloc(sizeof(char) * db->school_len + 1);
+		name = (char *)malloc(sizeof(char) * name_len + 1);
+		age = (char *)malloc(sizeof(char) * age_len + 1);
+		school = (char *)malloc(sizeof(char) * school_len + 1);
 
 		//read data for fields
-		fread(db->name, db->name_len, 1, fp);
-		fread(db->age, db->age_len, 1, fp);
-		fread(db->school, db->school_len, 1, fp);
+		fread(name, name_len, 1, fp);
+		fread(age, age_len, 1, fp);
+		fread(school, school_len, 1, fp);
 
-		done += 3 * sizeof(int) + db->name_len + db->age_len + db->school_len;
-		if (done < len)
-		{
-			db->next = new_node();
-		}
+		done += name_len + age_len + school_len;
+		done += sizeof(name_len) + sizeof(age_len) + sizeof(school_len);
+		add_node(&db, name, age, school);
+		
+		SMART_FREE(name);
+		SMART_FREE(age);
+		SMART_FREE(school);
 	}
 	fclose(fp);
 }

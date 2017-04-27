@@ -25,7 +25,7 @@ void serialize_db(t_db *db, char *filename)
 	buffer = (char *)malloc(sizeof(len));
 	int seeker = 0;
 
-	while(db != 0)
+	while(db)
 	{
 		memcpy(&buffer[seeker], &db->name_len, sizeof(db->name_len));
 		seeker += sizeof(db->name_len);
@@ -47,9 +47,12 @@ void serialize_db(t_db *db, char *filename)
 
 		db = db->next;
 	}
-	
+
 	asprintf(&filename, "%s%s", "./storage/", filename);
 	fp = fopen(filename, "wb+");
+	if (!fp)
+		perror("open file");
+	rewind(fp);
 	fwrite(buffer, len, 1, fp);
 	fclose(fp);
 	free(buffer);

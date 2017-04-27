@@ -28,7 +28,7 @@ void print_db(t_db *cur)
 
 void print_dbmenu(void)
 {
-	system("clear");
+	//system("clear");
 	printf("[1] Create new record\n");
 	printf("[2] View records\n");
 	printf("[3] Search records\n");
@@ -40,7 +40,7 @@ void print_dbmenu(void)
 
 void print_mmenu(void)
 {
-	system("clear");
+	//system("clear");
 	printf("[1] Create new database\n");
 	printf("[2] Open database\n");
 	printf("[3] Exit\n\n");
@@ -55,7 +55,7 @@ void open_db(t_db *db)
 	char *db_name = (char *)malloc(sizeof(char) * BUFF_LEN);
 	printf("Enter a name: ");
 	scanf("%s", db_name);
-	asprintf(&db_name, "%s%s", "./storage/", db_name);
+	//asprintf(&db_name, "%s%s", "./storage/", db_name);
 	deserialize_db(db, db_name);
 
 	int user_input = 0;
@@ -129,6 +129,7 @@ int main (void)
 		if (user_input == 3)
 			return (0);
 	}
-
+	if (db)
+		free_db(&db);
 	return (0);
 }
