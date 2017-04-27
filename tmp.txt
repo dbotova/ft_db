@@ -1,0 +1,212 @@
+Program to serialize linked list
+
+/* serialize.c
+
+linked list serialization example
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h> // string operations
+#include <stdint.h> // fixed width integers
+
+/* just an example structure */
+typedef struct item { /* I call this a list item, you can call it a node or an entry or 
+                         what ever you like :) */
+  uint8_t arrayLen;   /* this is an unsigned 8-bit integer */
+  char array[256];
+  struct item *next;
+} list;
+
+/* Function to serialize a linked list to buffer, intrestingly called a 'buffer' :)
+   Some people say 'Serialization' is supposed to be written 'Serialisation'.
+   Both cases are true, depending on which side of the Atlantic ocean you live. */
+void serializeList(list *item, char *buffer)
+{
+  int seeker = 0;  /* integer to keep record of the wrinting position in 'buffer' */
+  
+  while(item != 0) /* copy contents of the linked list in buffer as long there 
+  		      are items in the list. In this example, loop is  
+  		      done three times.  */
+  {
+
+    memcpy(&buffer[seeker], &item->arrayLen, sizeof(item->arrayLen));
+    seeker += sizeof(item->arrayLen); /* move seeker ahead by a byte */
+
+    /* copy characters from character array to the buffer */
+    memcpy(&buffer[seeker], &item->array, item->arrayLen);
+    seeker += item->arrayLen; /* ... and move the seeker ahead by the amount of	
+    			         characters in the array. */
+
+    item = item->next; /* move on to the next item (or node) in the list */
+  }
+}
+
+int listSize(list *item)
+{
+  int size = 0;
+  
+  while (item != 0) {
+    size += item->arrayLen;         /* add arrayLen bytes to 'size' */
+    size += sizeof(item->arrayLen); /* add 4 bytes to 'size' */
+    item = item->next;              /* ... and to the batmobil! */
+  }
+  return size;
+}
+
+int main (void)
+{
+  /* have something to save the list start and end */
+  list *ptr;                 /* pointer for traversing */
+  char *buffer;              /* this is where we serialize the list */
+  int listLength;            /* length of the list in bytes */
+  list first, second, third;
+  ptr = &first;              /* ptr points to the first element of the list now */
+  
+  FILE *filePtr;             /* this will point to the file we are using to verify the */
+  		             /* results of this little experiment */
+  
+  /* creating a short linked list for this example */
+  strcpy(first.array, "apple");
+  first.arrayLen = strlen(first.array);
+  first.next = &second;
+  					    
+  strcpy(second.array, "gasoline");
+  second.arrayLen = strlen(second.array);
+  second.next = &third;
+  
+  strcpy(third.array, "jackass");
+  third.arrayLen = strlen(third.array);
+  third.next = 0;
+  
+  /* listSize is a function returning length of the whole list in bytes */
+  listLength = listSize(ptr);
+  
+  /* allocate memory for the list, and let 'buffer' point to it. */
+  buffer = (char *)malloc(listLength);
+  
+  /* serializing list pointed by *ptr to char pointer named buffer */
+  serializeList(ptr, buffer);
+  
+  /* For this example, we are writing 'buffer' into a file.
+     We could also send this buffer through a socket to another computer,
+     but that is out of the scope of this example */
+  filePtr = fopen("example.data", "wb+"); /* a file called example.data will be
+  					     created in the same folder as where
+  					     this program resides upon execution. */
+
+  /* writing 'buffer' of the size 'listLength' once (1) to file pointed by filePtr */
+  fwrite(buffer, listLength, 1, filePtr); /* if I was smart, i'd be doing some error handling
+  					     here when trying to write to a file. */
+  					  
+  /* almost forgot... */
+  fclose(filePtr); /* close the file. */
+  free(buffer); /* free memory reserved by the serialized list. */
+  
+  return 0;
+}
+
+Program to de-serialize data
+
+This program reads through example.data file created in previous example. Make sure you run this program from the same folder where example.data is located at.
+
+/* derialize.c, not deserialize. That's not a typo :)
+
+WARRANTY: yeah right...
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <sys/stat.h>
+
+/* this is the same structure we have in serialize.c */
+typedef struct item {
+  uint8_t arrayLen; /* using fixed width integers for portability */
+  char array[256];
+  struct item *next;
+} list;
+
+/* start and end of the linked list */
+list *start = 0;
+list *end = 0;
+
+/* for this example, we are getting the filesize to find out how many
+   bytes need to be read from example.data */
+int fileSize(char *filename) {
+  struct stat buffer;         /* sys/stat */
+  char path[256];             /* buffer for saving filename */
+  unsigned int size;          /* and this will hold the size returned by this function */
+
+  strcpy(path, "./");         /* assuming that example.data is in the same folder */
+                              /* this program */
+  strcat(path, filename);     /* append filename to after './' */
+
+  if(stat(path, &buffer) < 0) /* get stat structure for example.data */
+    perror(path);
+  else
+    size = buffer.st_size;    /* st_size member of the stat structure holds */
+                              /* the filesize */
+  return size;
+}
+
+/* function to add 'item' to a linked list */
+void addToList(uint8_t arrayLen, char *buffer)
+{
+  list *ptr;                 /* creating a pointer */
+  ptr = malloc(sizeof(ptr)); /* allocate space for array and arrayLen */
+  
+  if (start == 0) {           /* if this is the first element added to the list */
+    start = ptr;              /* structure pointed by ptr is first in the list */
+    ptr->next = 0;            /* next is 0, this is also the last item in the list */
+  }
+  else {                      /* if there are allready items in the list */
+    end->next = ptr;          /* last item in the list points to this. */
+  }
+  end = ptr;                  /* last item in the list is ptr */
+  ptr->next = 0;              /* this is the last item */
+  
+  ptr->arrayLen = arrayLen;   /* put the values in the strucure */
+  strcpy(ptr->array, buffer); /* same here */
+}
+
+/* simple function to traverse through a linked list and print contents */
+void printList (list *ptr)
+{
+  while(ptr != 0) {
+    printf("arrayLen: %i, array: %s\n", ptr->arrayLen, ptr->array);
+    ptr = ptr->next;
+  }
+}
+
+int main (void)
+{
+  FILE *filePtr;      /* filepointer for opening a file */
+  int listLength = 0; /* total length of the list in bytes */
+  int done = 0;       /* bytes added to linked list, used in looping through example.data */
+  uint8_t arrayLen;   /* 8-bit integer designating array length in bytes */
+  char *buffer;
+  
+  /* determine total length of data (same as filesize in this example) */
+  listLength = fileSize("example.data");
+  
+  /* open example.data we created with serialize */
+  filePtr = fopen("example.data", "rb"); // read binary
+  
+  /* loop through the file until the whole file has been read */
+  while (done < listLength) {
+    fread(&arrayLen, 1, 1, filePtr);      /* read first byte from file to arrayLen
+                                             first byte saved in the file was the length of 
+                                             'apple' in bytes. */
+    buffer =(char *)malloc(arrayLen + 1); /* allocate space for array and null character ('\0') */
+    fread(buffer, arrayLen, 1, filePtr);  /* read arrayLen amount of bytes from file */
+    buffer[arrayLen] = '\0';              /* add ending character to character array */
+    addToList(arrayLen, buffer);          /* adding arrayLen and array(located in buffer) to linked list */
+    done += arrayLen + 1;                 /* done is length of array plus one byte for arrayLen */
+    free(buffer);
+  }
+  
+  /* print linked list to confirm result */
+  printList(start);
+  
+  return 0;
+}

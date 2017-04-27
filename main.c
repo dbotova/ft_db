@@ -75,13 +75,15 @@ void read_file(t_db	*db)
 
 }
 
-unsigned int db_len(t_db *db)
+int db_len(t_db *db)
 {
-	unsigned int size = 0;
+	int size = 0;
 
 	while(db)
 	{
-		size += 3 * sizeof(int); // 3 variable for len
+		size += sizeof(db->name_len);
+		size += sizeof(db->age_len);
+		size += sizeof(db->school_len);
 		size += db->name_len;
 		size += db->age_len;
 		size += db->school_len;
@@ -100,14 +102,14 @@ void serialize_db(t_db *db)
 
 	while(db != 0)
 	{
-		memcpy(&buffer[seeker], &db->name_len, sizeof(int));
-		seeker += sizeof(int);
+		memcpy(&buffer[seeker], &db->name_len, sizeof(db->name_len));
+		seeker += sizeof(db->name_len);
 
-		memcpy(&buffer[seeker], &db->age_len, sizeof(int));
-		seeker += sizeof(int);
+		memcpy(&buffer[seeker], &db->age_len, sizeof(db->age_len));
+		seeker += sizeof(db->age_len);
 
-		memcpy(&buffer[seeker], &db->school_len, sizeof(int));
-		seeker += sizeof(int);
+		memcpy(&buffer[seeker], &db->school_len, sizeof(db->school_len));
+		seeker += sizeof(db->school_len);
 
 		memcpy(&buffer[seeker], db->name, db->name_len);
 		seeker += db->name_len;
@@ -129,7 +131,7 @@ void serialize_db(t_db *db)
 int file_size(char *path)
 {
 	struct stat buffer;
-	unsigned int size;
+	int size;
 
     if(stat(path, &buffer) < 0)
     	perror(path);
@@ -151,24 +153,27 @@ void deserialize_db(t_db *db)
 		fread(&db->name_len, sizeof(int), 1, filePtr);
 		fread(&db->age_len, sizeof(int), 1, filePtr);
 		fread(&db->school_len, sizeof(int), 1, filePtr);
-		printf("name_len %d age_len %d school_len %d \n", db->name_len, db->age_len, db->school_len);
 
 		//allocate memory
-		db->name = (char *)malloc(sizeof(char) * db->name_len);
-		db->age = (char *)malloc(sizeof(char) * db->age_len);
-		db->school = (char *)malloc(sizeof(char) * db->school_len);
+		db->name = (char *)malloc(sizeof(char) * db->name_len + 1);
+		db->age = (char *)malloc(sizeof(char) * db->age_len + 1);
+		db->school = (char *)malloc(sizeof(char) * db->school_len + 1);
 
 		//read data for fields
 		fread(db->name, db->name_len, 1, filePtr);
 		fread(db->age, db->age_len, 1, filePtr);
 		fread(db->school, db->school_len, 1, filePtr);
 
-		db->next = (t_db*)malloc(sizeof(t_db));
-		db = db->next;
-		db->name = NULL;
-		db->age = NULL;
-		db->school = NULL;
 		done += 3 * sizeof(int) + db->name_len + db->age_len + db->school_len;
+		if (done < len)
+		{
+			db->next = (t_db*)malloc(sizeof(t_db));
+			db = db->next;
+			db->name = NULL;
+			db->age = NULL;
+			db->school = NULL;
+			db->next = NULL;
+		}
 	}
 	fclose(filePtr);
 }
@@ -186,6 +191,7 @@ void free_list(t_db *db)
 		free(tmp->school);
 		free(tmp);
 	}
+	db = NULL;
 }
 
 void print_db(t_db *cur)
@@ -204,27 +210,64 @@ void print_db(t_db *cur)
 int main ()
 {
 	t_db *db = (t_db*)malloc(sizeof(t_db));
-	db->name = NULL;
-	db->age = NULL;
-	db->school = NULL;
+	// db->name = "Dasha";
+	// db->age = "30";
+	// db->school = "42";
+	// db->name_len = strlen(db->name);
+	// db->age_len = strlen(db->age);
+	// db->school_len = strlen(db->school);
+	// db->next = NULL;
 	
-	read_file(db);
-	print_db(db);
+	// //read_file(db);
+	// print_db(db);
 
-	//dump to file
-	serialize_db(db);
+	// //dump to file
+	// serialize_db(db);
 	
-	free_list(db);
+	// free_list(db);
 
 	// read from file
-	db = (t_db*)malloc(sizeof(t_db));
+	//db = (t_db*)malloc(sizeof(t_db)); 
 	db->name = NULL;
 	db->age = NULL;
 	db->school = NULL;
+	db->next = NULL;
 
 	printf("\nREAD FROM FILE TO LIST\n");
 	deserialize_db(db);
 	print_db(db);
+
+	t_db *cur = db;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = (t_db*)malloc(sizeof(t_db));
+	cur = cur->next;
+	cur->name_len = 11;
+	cur->age_len = 2;
+	cur->school_len = 4;
+	cur->name = "Vasya Pupkin";
+	cur->age = "20";
+	cur->school = "none";
+
+	printf("\nPRINT AFTER UPDATE\n");
+	print_db(db);
+
+	// //dump to file
+	serialize_db(db);
+	
+	//free_list(db);
+
+	// read from file
+	t_db *db_1 = (t_db*)malloc(sizeof(t_db));
+	db_1->name = NULL;
+	db_1->age = NULL;
+	db_1->school = NULL;
+	db_1->next = NULL;
+
+	printf("\nREAD FROM FILE TO LIST AFTER UPDATE 2\n");
+	deserialize_db(db_1);
+	print_db(db_1);
+	//free_list(db_1);
 
 	return (0);
 }
