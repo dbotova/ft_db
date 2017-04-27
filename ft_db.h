@@ -16,7 +16,11 @@
 # include <stdio.h>
 # include <string.h>
 # include <sys/stat.h>
+# include <unistd.h>
 # define SMART_FREE(x) {free(x); x = NULL;}
+# define PROMPT "=^..^= : "
+# define NOT_DONE {printf("UNDER IMPLEMENTATION\n"); sleep(2);}
+# define BUFF_LEN 20
 
 typedef struct		s_db
 {
@@ -30,9 +34,12 @@ typedef struct		s_db
 	struct s_db *prev;
 }					t_db;
 
-t_db *new_node(t_db *node);
+t_db *new_node(void);
 void free_node(t_db *node);
+void free_db(t_db **db);
+void add_node(t_db **db, char *name, char *age, char *school);
 void serialize_db(t_db *db, char *filename);
 void deserialize_db(t_db *db, char *path);
+t_db *create_record(t_db *db);
 
 #endif

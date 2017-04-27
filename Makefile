@@ -13,7 +13,8 @@
 OBJS =		main.o \
 			deserialize.o \
 			serialize.o \
-			dllist.o
+			dllist.o \
+			records.o
 
 HEADERS =	ft_db.h
 

@@ -14,6 +14,7 @@
 
 void print_db(t_db *cur)
 {
+	system("clear");
 	int i = 1;
 	while (cur)
 	{
@@ -25,52 +26,109 @@ void print_db(t_db *cur)
 	}
 }
 
-int main ()
+void print_dbmenu(void)
 {
-	t_db *db = (t_db*)malloc(sizeof(t_db));
-	db->name = NULL;
-	db->age = NULL;
-	db->school = NULL;
-	db->next = NULL;
+	system("clear");
+	printf("[1] Create new record\n");
+	printf("[2] View records\n");
+	printf("[3] Search records\n");
+	printf("[4] Export database\n");
+	printf("[5] Back to Main Menu\n");
+	printf("[6] Exit\n\n");
+	printf(PROMPT);
+}
 
-	printf("\nREAD FROM FILE TO LIST\n");
-	char *name = NULL;
-	scanf("Enter path: %s\n", name);
-	deserialize_db(db, name);
-	print_db(db);
+void print_mmenu(void)
+{
+	system("clear");
+	printf("[1] Create new database\n");
+	printf("[2] Open database\n");
+	printf("[3] Exit\n\n");
+	printf(PROMPT);
+}
 
-	t_db *cur = db;
-	while (cur->next)
-		cur = cur->next;
-	cur->next = (t_db*)malloc(sizeof(t_db));
-	cur = cur->next;
-	cur->name_len = 11;
-	cur->age_len = 2;
-	cur->school_len = 4;
-	cur->name = "Vasya Pupkin";
-	cur->age = "20";
-	cur->school = "none";
+void open_db(t_db *db)
+{
+	if (!db)
+		db = new_node();
 
-	printf("\nPRINT AFTER UPDATE\n");
-	print_db(db);
+	char *db_name = (char *)malloc(sizeof(char) * BUFF_LEN);
+	printf("Enter a name: ");
+	scanf("%s", db_name);
+	asprintf(&db_name, "%s%s", "./storage/", db_name);
+	deserialize_db(db, db_name);
 
-	// //dump to file
-	scanf("Enter path for dump: %s\n", name);
-	serialize_db(db, name);
-	
-	//free_list(db);
+	int user_input = 0;
+	while (42)
+	{
+		print_dbmenu();
+		scanf("%d", &user_input);
+		if (user_input == 1)
+			db = create_record(db);
+		if (user_input == 2)
+		{
+			print_db(db);
+			sleep(5);
+		}
+		if (user_input == 3)
+			NOT_DONE;
+		if (user_input == 4)
+			serialize_db(db, db_name);
+		if (user_input == 5)
+			return ;
+		if (user_input == 6)
+			exit (0);
+	}
+	SMART_FREE(db_name);
+	free_db(&db);
+}
 
-	// read from file
-	t_db *db_1 = (t_db*)malloc(sizeof(t_db));
-	db_1->name = NULL;
-	db_1->age = NULL;
-	db_1->school = NULL;
-	db_1->next = NULL;
+void create_newdb(t_db *db)
+{
+	char *db_name = (char *)malloc(sizeof(char) * BUFF_LEN);
+	int user_input = 0;
 
-	printf("\nREAD FROM FILE TO LIST AFTER UPDATE 2\n");
-	deserialize_db(db_1, name);
-	print_db(db_1);
-	//free_list(db_1);
+	printf("Enter a name for your database: ");
+	scanf("%s", db_name);
+	while (42)
+	{
+		print_dbmenu();
+		scanf("%d", &user_input);
+		if (user_input == 1)
+			db = create_record(db);
+		if (user_input == 2)
+		{
+			print_db(db);
+			sleep(5);
+		}
+		if (user_input == 3)
+			NOT_DONE;
+		if (user_input == 4)
+			serialize_db(db, db_name);
+		if (user_input == 5)
+			return ;
+		if (user_input == 6)
+			exit (0);
+	}
+	SMART_FREE(db_name);
+}
+
+int main (void)
+{
+	int user_input = 0;
+	t_db *db = NULL;
+
+	while (42)
+	{
+		print_mmenu();
+		scanf("%d", &user_input);
+		if (user_input == 1)
+			create_newdb(db);
+		if (user_input == 2)
+			open_db(db);
+		if (user_input == 3)
+			return (0);
+	}
 
 	return (0);
 }

@@ -14,17 +14,17 @@ static int file_size(char *path)
 
 void deserialize_db(t_db *db, char *path)
 {
-	FILE *filePtr;
+	FILE *fp;
 	unsigned int len = file_size(path);
 	unsigned int done = 0;
 
-	filePtr = fopen(path, "rb");
+	fp = fopen(path, "rb");
 	while (done < len)
 	{
 		// read the sizes of fields
-		fread(&db->name_len, sizeof(int), 1, filePtr);
-		fread(&db->age_len, sizeof(int), 1, filePtr);
-		fread(&db->school_len, sizeof(int), 1, filePtr);
+		fread(&db->name_len, sizeof(int), 1, fp);
+		fread(&db->age_len, sizeof(int), 1, fp);
+		fread(&db->school_len, sizeof(int), 1, fp);
 
 		//allocate memory
 		db->name = (char *)malloc(sizeof(char) * db->name_len + 1);
@@ -32,20 +32,15 @@ void deserialize_db(t_db *db, char *path)
 		db->school = (char *)malloc(sizeof(char) * db->school_len + 1);
 
 		//read data for fields
-		fread(db->name, db->name_len, 1, filePtr);
-		fread(db->age, db->age_len, 1, filePtr);
-		fread(db->school, db->school_len, 1, filePtr);
+		fread(db->name, db->name_len, 1, fp);
+		fread(db->age, db->age_len, 1, fp);
+		fread(db->school, db->school_len, 1, fp);
 
 		done += 3 * sizeof(int) + db->name_len + db->age_len + db->school_len;
 		if (done < len)
 		{
-			db->next = (t_db*)malloc(sizeof(t_db));
-			db = db->next;
-			db->name = NULL;
-			db->age = NULL;
-			db->school = NULL;
-			db->next = NULL;
+			db->next = new_node();
 		}
 	}
-	fclose(filePtr);
+	fclose(fp);
 }
