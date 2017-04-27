@@ -11,188 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_db.h"
-#define NAMES "names.txt"
-#define AGE "age.txt"
-#define SCHOOL "school.txt"
-
-void read_file(t_db	*db)
-{
-	t_db *cur = db;
-	FILE *names = fopen(NAMES, "r");
-	FILE *ages = fopen(AGE, "r");
-	FILE *schools = fopen(SCHOOL, "r");
-	if (names == NULL || ages == NULL || schools == NULL)
-		exit(EXIT_FAILURE);
-
-	size_t len = 0;
-
-	cur->name = NULL;
-	cur->age = NULL;
-	cur->school = NULL;
-	getline(&cur->name, &len, names);
-	cur->name_len = strlen(cur->name) - 1;
-	cur->name[cur->name_len] = 0;
-	getline(&cur->school, &len, schools);
-	cur->school_len = strlen(cur->school) - 1;
-	cur->school[cur->school_len] = 0;
-	getline(&cur->age, &len, ages);
-	cur->age_len = strlen(cur->age) - 1;
-	cur->age[cur->age_len] = 0;
-
-	cur->next = (t_db*)malloc(sizeof(t_db));
-	cur = cur->next;
-	cur->name = NULL;
-	cur->age = NULL;
-	cur->school = NULL;
-	getline(&cur->name, &len, names);
-	cur->name_len = strlen(cur->name) - 1;
-	cur->name[cur->name_len] = 0;
-	getline(&cur->school, &len, schools);
-	cur->school_len = strlen(cur->school) - 1;
-	cur->school[cur->school_len] = 0;
-	getline(&cur->age, &len, ages);
-	cur->age_len = strlen(cur->age) - 1;
-	cur->age[cur->age_len] = 0;
-
-	cur->next = (t_db*)malloc(sizeof(t_db));
-	cur = cur->next;
-	cur->name = NULL;
-	cur->age = NULL;
-	cur->school = NULL;
-	getline(&cur->name, &len, names);
-	cur->name_len = strlen(cur->name) - 1;
-	cur->name[cur->name_len] = 0;
-	getline(&cur->school, &len, schools);
-	cur->school_len = strlen(cur->school) - 1;
-	cur->school[cur->school_len] = 0;
-	getline(&cur->age, &len, ages);
-	cur->age_len = strlen(cur->age) - 1;
-	cur->age[cur->age_len] = 0;
-
-	fclose(names);
-	fclose(ages);
-	fclose(schools);
-
-}
-
-int db_len(t_db *db)
-{
-	int size = 0;
-
-	while(db)
-	{
-		size += sizeof(db->name_len);
-		size += sizeof(db->age_len);
-		size += sizeof(db->school_len);
-		size += db->name_len;
-		size += db->age_len;
-		size += db->school_len;
-		db = db->next;
-	}
-	return (size);
-}
-
-void serialize_db(t_db *db)
-{
-	FILE *filePtr;
-	char *buffer = NULL;
-	unsigned int len = db_len(db);
-	buffer = (char *)malloc(sizeof(len));
-	int seeker = 0;
-
-	while(db != 0)
-	{
-		memcpy(&buffer[seeker], &db->name_len, sizeof(db->name_len));
-		seeker += sizeof(db->name_len);
-
-		memcpy(&buffer[seeker], &db->age_len, sizeof(db->age_len));
-		seeker += sizeof(db->age_len);
-
-		memcpy(&buffer[seeker], &db->school_len, sizeof(db->school_len));
-		seeker += sizeof(db->school_len);
-
-		memcpy(&buffer[seeker], db->name, db->name_len);
-		seeker += db->name_len;
-
-		memcpy(&buffer[seeker], db->age, db->age_len);
-		seeker += db->age_len;
-
-		memcpy(&buffer[seeker], db->school, db->school_len);
-		seeker += db->school_len;
-
-		db = db->next;
-	}
-	filePtr = fopen("db.data", "wb+");
-	fwrite(buffer, len, 1, filePtr);
-	fclose(filePtr);
-	free(buffer);
-}
-
-int file_size(char *path)
-{
-	struct stat buffer;
-	int size;
-
-    if(stat(path, &buffer) < 0)
-    	perror(path);
-    else
-    	size = buffer.st_size;
-    return (size);
-}
-
-void deserialize_db(t_db *db)
-{
-	FILE *filePtr;
-	unsigned int len = file_size("./db.data");
-	unsigned int done = 0;
-
-	filePtr = fopen("./db.data", "rb");
-	while (done < len)
-	{
-		// read the sizes of fields
-		fread(&db->name_len, sizeof(int), 1, filePtr);
-		fread(&db->age_len, sizeof(int), 1, filePtr);
-		fread(&db->school_len, sizeof(int), 1, filePtr);
-
-		//allocate memory
-		db->name = (char *)malloc(sizeof(char) * db->name_len + 1);
-		db->age = (char *)malloc(sizeof(char) * db->age_len + 1);
-		db->school = (char *)malloc(sizeof(char) * db->school_len + 1);
-
-		//read data for fields
-		fread(db->name, db->name_len, 1, filePtr);
-		fread(db->age, db->age_len, 1, filePtr);
-		fread(db->school, db->school_len, 1, filePtr);
-
-		done += 3 * sizeof(int) + db->name_len + db->age_len + db->school_len;
-		if (done < len)
-		{
-			db->next = (t_db*)malloc(sizeof(t_db));
-			db = db->next;
-			db->name = NULL;
-			db->age = NULL;
-			db->school = NULL;
-			db->next = NULL;
-		}
-	}
-	fclose(filePtr);
-}
-
-void free_list(t_db *db)
-{
-	t_db *tmp = NULL;
-
-	while(db)
-	{
-		tmp = db;
-		db = db->next;
-		free(tmp->name);
-		free(tmp->age);
-		free(tmp->school);
-		free(tmp);
-	}
-	db = NULL;
-}
 
 void print_db(t_db *cur)
 {
@@ -210,31 +28,15 @@ void print_db(t_db *cur)
 int main ()
 {
 	t_db *db = (t_db*)malloc(sizeof(t_db));
-	// db->name = "Dasha";
-	// db->age = "30";
-	// db->school = "42";
-	// db->name_len = strlen(db->name);
-	// db->age_len = strlen(db->age);
-	// db->school_len = strlen(db->school);
-	// db->next = NULL;
-	
-	// //read_file(db);
-	// print_db(db);
-
-	// //dump to file
-	// serialize_db(db);
-	
-	// free_list(db);
-
-	// read from file
-	//db = (t_db*)malloc(sizeof(t_db)); 
 	db->name = NULL;
 	db->age = NULL;
 	db->school = NULL;
 	db->next = NULL;
 
 	printf("\nREAD FROM FILE TO LIST\n");
-	deserialize_db(db);
+	char *name = NULL;
+	scanf("Enter path: %s\n", name);
+	deserialize_db(db, name);
 	print_db(db);
 
 	t_db *cur = db;
@@ -253,7 +55,8 @@ int main ()
 	print_db(db);
 
 	// //dump to file
-	serialize_db(db);
+	scanf("Enter path for dump: %s\n", name);
+	serialize_db(db, name);
 	
 	//free_list(db);
 
@@ -265,7 +68,7 @@ int main ()
 	db_1->next = NULL;
 
 	printf("\nREAD FROM FILE TO LIST AFTER UPDATE 2\n");
-	deserialize_db(db_1);
+	deserialize_db(db_1, name);
 	print_db(db_1);
 	//free_list(db_1);
 

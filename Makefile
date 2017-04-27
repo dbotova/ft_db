@@ -11,18 +11,20 @@
 # **************************************************************************** #
 
 OBJS =		main.o \
-			init_db.o
+			deserialize.o \
+			serialize.o \
+			dllist.o
 
 HEADERS =	ft_db.h
 
-CFLAGS += 	-Wall - Werror - Wextra
+CFLAGS += 	-Wall -Werror -Wextra
 
 NAME =		cooldb
 
 all: $(NAME)
 
-$(NAME):
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+$(NAME): $(OBJS)
+		$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 $(OBJ): $(HEADERS)
 

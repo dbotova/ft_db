@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <sys/stat.h>
+# define SMART_FREE(x) {free(x); x = NULL;}
 
 typedef struct		s_db
 {
@@ -26,6 +27,12 @@ typedef struct		s_db
 	int age_len;
 	int school_len;
 	struct s_db *next;
+	struct s_db *prev;
 }					t_db;
+
+t_db *new_node(t_db *node);
+void free_node(t_db *node);
+void serialize_db(t_db *db, char *filename);
+void deserialize_db(t_db *db, char *path);
 
 #endif
