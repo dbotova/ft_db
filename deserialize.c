@@ -24,10 +24,9 @@ void deserialize_db(t_db *db, char *path)
 	int age_len = 0;
 	int school_len = 0;
 
-	asprintf(&path, "%s%s", "./storage/", path);
 	fp = fopen(path, "rb");
 	if (!fp)
-		perror("deserialize_db: ");
+		return ;
 	while (done < len)
 	{
 		// read the sizes of fields

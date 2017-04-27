@@ -48,12 +48,10 @@ void serialize_db(t_db *db, char *filename)
 		db = db->next;
 	}
 
-	asprintf(&filename, "%s%s", "./storage/", filename);
 	fp = fopen(filename, "wb+");
 	if (!fp)
 		perror("open file");
 	rewind(fp);
 	fwrite(buffer, len, 1, fp);
 	fclose(fp);
-	free(buffer);
 }
