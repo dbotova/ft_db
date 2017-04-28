@@ -1,4 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   records.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbotova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/27 18:05:24 by dbotova           #+#    #+#             */
+/*   Updated: 2017/04/27 18:05:26 by dbotova          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_db.h"
+
+void print_db(t_db *db)
+{
+	system("clear");
+	
+	TAB_DELIMETR;
+	TAB_HEADER;
+	TAB_DELIMETR;
+	if (!db)
+	{
+		printf("|%35s%-22s|\n", "***EMPTY***", "");
+		TAB_DELIMETR;
+		return ;
+	}
+	while (db)
+	{
+		printf("|%-9d", db->id);
+		printf("|%-18s", db->name);
+		printf("|%-9s", db->age);
+		printf("|%-18s|\n", db->school);
+		db = db->next;
+	}
+	TAB_DELIMETR;
+}
 
 t_db *create_record(t_db *db)
 {

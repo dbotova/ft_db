@@ -21,9 +21,12 @@
 # define PROMPT "=^..^= : "
 # define NOT_DONE {printf("UNDER IMPLEMENTATION\n"); sleep(2);}
 # define BUFF_LEN 20
+# define TAB_DELIMETR printf("-----------------------------------------------------------\n")
+# define TAB_HEADER printf("|%-9s|%-18s|%-9s|%-18s|\n", "ID", "NAME", "AGE", "SCHOOL");
 
 typedef struct		s_db
 {
+	int id;
 	char *name;
 	char *age;
 	char *school;
@@ -41,5 +44,6 @@ void add_node(t_db **db, char *name, char *age, char *school);
 void serialize_db(t_db *db, char *filename);
 void deserialize_db(t_db *db, char *path);
 t_db *create_record(t_db *db);
+void print_db(t_db *db);
 
 #endif

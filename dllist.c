@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dllist.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbotova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/27 18:05:36 by dbotova           #+#    #+#             */
+/*   Updated: 2017/04/27 18:05:37 by dbotova          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_db.h"
 
 t_db *new_node(void)
@@ -11,6 +23,7 @@ t_db *new_node(void)
 	new->name_len = 0;
 	new->age_len = 0;
 	new->school_len = 0;
+	new->id = 0;
 
 	return (new);
 }
@@ -44,7 +57,18 @@ void add_node(t_db **db, char *name, char *age, char *school)
 		(*db)->name_len = strlen((*db)->name);
 		(*db)->age_len = strlen((*db)->age);
 		(*db)->school_len = strlen((*db)->school);
+		(*db)->id = 0;
 		return ;
 	}
-	add_node(&(*db)->next, name, age, school);
+	while ((*db)->next)
+		db = &(*db)->next;
+	(*db)->next = new_node();
+	(*db)->next->prev = (*db);
+	(*db)->next->name = strdup(name);
+	(*db)->next->age = strdup(age);
+	(*db)->next->school = strdup(school);
+	(*db)->next->name_len = strlen((*db)->name);
+	(*db)->next->age_len = strlen((*db)->age);
+	(*db)->next->school_len = strlen((*db)->school);
+	(*db)->next->id = (*db)->id + 1;
 }

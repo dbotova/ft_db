@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deserialize.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbotova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/27 18:05:52 by dbotova           #+#    #+#             */
+/*   Updated: 2017/04/27 18:05:54 by dbotova          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_db.h"
 
 static int file_size(char *path)
@@ -23,6 +35,7 @@ void deserialize_db(t_db *db, char *path)
 	int name_len = 0;
 	int age_len = 0;
 	int school_len = 0;
+	int id = 0;
 
 	fp = fopen(path, "rb");
 	if (!fp)
@@ -30,6 +43,7 @@ void deserialize_db(t_db *db, char *path)
 	while (done < len)
 	{
 		// read the sizes of fields
+		fread(&id, sizeof(int), 1, fp);
 		fread(&name_len, sizeof(int), 1, fp);
 		fread(&age_len, sizeof(int), 1, fp);
 		fread(&school_len, sizeof(int), 1, fp);
@@ -45,7 +59,7 @@ void deserialize_db(t_db *db, char *path)
 		fread(school, school_len, 1, fp);
 
 		done += name_len + age_len + school_len;
-		done += sizeof(name_len) + sizeof(age_len) + sizeof(school_len);
+		done += sizeof(name_len) + sizeof(age_len) + sizeof(school_len) + sizeof(id);
 		add_node(&db, name, age, school);
 		
 		SMART_FREE(name);

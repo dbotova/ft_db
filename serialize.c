@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   serialize.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbotova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/27 18:05:42 by dbotova           #+#    #+#             */
+/*   Updated: 2017/04/27 18:05:44 by dbotova          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_db.h"
 
 static int db_len(t_db *db)
@@ -12,6 +24,7 @@ static int db_len(t_db *db)
 		size += db->name_len;
 		size += db->age_len;
 		size += db->school_len;
+		size += sizeof(db->id);
 		db = db->next;
 	}
 	return (size);
@@ -27,6 +40,9 @@ void serialize_db(t_db *db, char *filename)
 
 	while(db)
 	{
+		memcpy(&buffer[seeker], &db->id, sizeof(db->id));
+		seeker += sizeof(db->id);
+		
 		memcpy(&buffer[seeker], &db->name_len, sizeof(db->name_len));
 		seeker += sizeof(db->name_len);
 
