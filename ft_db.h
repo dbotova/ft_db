@@ -23,6 +23,7 @@
 # define BUFF_LEN 20
 # define TAB_DELIMETR printf("-----------------------------------------------------------\n")
 # define TAB_HEADER printf("|%-9s|%-18s|%-9s|%-18s|\n", "ID", "NAME", "AGE", "SCHOOL");
+# define DICTIONARY_SIZE 1000
 
 typedef struct		s_db
 {
@@ -30,11 +31,12 @@ typedef struct		s_db
 	char *name;
 	char *age;
 	char *school;
-	int name_len;
-	int age_len;
-	int school_len;
+	size_t name_len;
+	size_t age_len;
+	size_t school_len;
 	struct s_db *next;
 	struct s_db *prev;
+	struct s_db dictionary[DICTIONARY_SIZE];
 }					t_db;
 
 t_db *new_node(void);
@@ -46,7 +48,10 @@ void serialize_db(t_db *db, char *filename);
 t_db *deserialize_db(t_db *db, char *path);
 t_db *create_record(t_db *db);
 void print_db(t_db *db);
-void print_dbmenu(t_db *db);
+void print_dbmenu(t_db *db, char *db_name);
 void print_mmenu(void);
+
+void print_debugmenu(t_db *db);
+unsigned int hash(t_db *db);
 
 #endif

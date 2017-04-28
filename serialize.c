@@ -45,13 +45,13 @@ void serialize_db(t_db *db, char *filename)
 		seeker += sizeof(int);
 		
 		memcpy(&buffer[seeker], &db->name_len, sizeof(db->name_len));
-		seeker += sizeof(int);
+		seeker += sizeof(size_t);
 
 		memcpy(&buffer[seeker], &db->age_len, sizeof(db->age_len));
-		seeker += sizeof(int);
+		seeker += sizeof(size_t);
 
 		memcpy(&buffer[seeker], &db->school_len, sizeof(db->school_len));
-		seeker += sizeof(int);
+		seeker += sizeof(size_t);
 
 		memcpy(&buffer[seeker], db->name, db->name_len);
 		seeker += db->name_len;

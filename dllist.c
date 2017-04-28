@@ -77,8 +77,6 @@ void add_node_from_file(t_db **db, char *name, char *age, char *school, int id)
 {
 	if (!*db)
 	{
-		printf("NEW\n");
-		printf("name: %s age: %s school: %s id: %d\n", name, age, school, id);
 		(*db) = new_node();
 		(*db)->name = strdup(name);
 		(*db)->age = strdup(age);
@@ -91,8 +89,6 @@ void add_node_from_file(t_db **db, char *name, char *age, char *school, int id)
 	}
 	while ((*db)->next)
 		db = &(*db)->next;
-	printf("OLD\n");
-	printf("name: %s age: %s school: %s id: %d\n", name, age, school, id);
 	(*db)->next = new_node();
 	(*db)->next->prev = (*db);
 	(*db)->next->name = strdup(name);
@@ -101,6 +97,6 @@ void add_node_from_file(t_db **db, char *name, char *age, char *school, int id)
 	(*db)->next->name_len = strlen((*db)->name);
 	(*db)->next->age_len = strlen((*db)->age);
 	(*db)->next->school_len = strlen((*db)->school);
-	(*db)->next->id = (*db)->id;
+	(*db)->next->id = id;
 }
 

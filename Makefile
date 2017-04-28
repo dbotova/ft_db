@@ -15,13 +15,14 @@ OBJS =		main.o \
 			serialize.o \
 			dllist.o \
 			records.o \
-			menus.o
+			menus.o \
+			dictionary.o
 
 HEADERS =	ft_db.h
 
 CFLAGS += 	-Wall -Werror -Wextra
 
-NAME =		cooldb
+NAME =		meowdb
 
 all: $(NAME)
 

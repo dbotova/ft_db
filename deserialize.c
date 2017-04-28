@@ -32,10 +32,10 @@ t_db *deserialize_db(t_db *db, char *path)
 	char *name = NULL;
 	char *age = NULL;
 	char *school = NULL;
-	int name_len = 0;
-	int age_len = 0;
-	int school_len = 0;
-	int id = 0;
+	size_t name_len = 0;
+	size_t age_len = 0;
+	size_t school_len = 0;
+	size_t id = 0;
 
 	fp = fopen(path, "rb");
 	if (!fp)
@@ -44,9 +44,9 @@ t_db *deserialize_db(t_db *db, char *path)
 	{
 		// read the sizes of fields
 		fread(&id, sizeof(int), 1, fp);
-		fread(&name_len, sizeof(int), 1, fp);
-		fread(&age_len, sizeof(int), 1, fp);
-		fread(&school_len, sizeof(int), 1, fp);
+		fread(&name_len, sizeof(size_t), 1, fp);
+		fread(&age_len, sizeof(size_t), 1, fp);
+		fread(&school_len, sizeof(size_t), 1, fp);
 
 		//allocate memory
 		name = (char *)malloc(sizeof(char) * name_len + 1);

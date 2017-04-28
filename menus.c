@@ -12,29 +12,89 @@
 
 #include "ft_db.h"
 
-void print_dbmenu(t_db *db)
+void print_debugmenu(t_db *db)
+{
+	int user_input = 0;
+
+	while (42)
+	{
+		printf("\n");
+		print_db(db);
+
+		printf("\n\n");
+		printf("%-13s", "[HASH (1)]");
+		printf("%-15s", "[... (2)]");
+		printf("%-15s", "[... (3)]");
+		printf("%-12s", "[BACK (4)]");
+		printf("%-13s\n", "[EXIT (5)]");
+		printf("\n\n");
+		printf(PROMPT);
+
+		scanf("%d", &user_input);
+		if (user_input == 1)
+			printf("%u\n", hash(db));
+		if (user_input == 2)
+			NOT_DONE;
+		if (user_input == 3)
+			NOT_DONE;
+		if (user_input == 4)
+			return ;
+		if (user_input == 5)
+		{
+			free_db(&db);
+			exit (0);
+		}
+	}
+}
+
+void print_dbmenu(t_db *db, char *db_name)
 {
 	//system("clear");
+	int user_input = 0;
 
-	printf("\n");
-	print_db(db);
+	while (42)
+	{
+		printf("\n");
+		print_db(db);
 
-	printf("\n\n");
-	printf("%-25s", "[Create new record (1)]");
-	printf("%-25s", "[Search records (2)]");
-	printf("%-25s", "[Export database (3)]");
-	printf("%-25s", "[Back to Main Menu (4)]");
-	printf("%-25s\n", "[Exit (5)]");
-	printf("\n\n");
-	printf(PROMPT);
+		printf("\n\n");
+		printf("%-13s", "[ADD (1)]");
+		printf("%-15s", "[SEARCH (2)]");
+		printf("%-15s", "[EXPORT (3)]");
+		printf("%-12s", "[BACK (4)]");
+		printf("%-13s\n", "[EXIT (5)]");
+		printf("%s\n", "[DEBUG (0)]");
+		printf("\n\n");
+		printf(PROMPT);
+
+		scanf("%d", &user_input);
+		if (user_input == 1)
+			db = create_record(db);
+		if (user_input == 2)
+			NOT_DONE;
+		if (user_input == 3)
+			serialize_db(db, db_name);
+		if (user_input == 4)
+			return ;
+		if (user_input == 5)
+		{
+			free_db(&db);
+			exit (0);
+		}
+		if (user_input == 0)
+		{
+			system("clear");
+			print_debugmenu(db);
+		}
+	}
 }
 
 void print_mmenu(void)
 {
 	printf("\n\n");
-	printf("%-35s", "[Create new database (1)]");
-	printf("%-30s", "[Open database (2)]");
-	printf("%-30s\n", "[Exit (3)]");
+	printf("%-15s", "[CREATE (1)]");
+	printf("%-12s", "[OPEN (2)]");
+	printf("%s\n", "[EXIT (3)]");
 	printf("\n\n");
 	printf(PROMPT);
 }
