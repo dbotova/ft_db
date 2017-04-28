@@ -14,7 +14,8 @@ OBJS =		main.o \
 			deserialize.o \
 			serialize.o \
 			dllist.o \
-			records.o
+			records.o \
+			menus.o
 
 HEADERS =	ft_db.h
 

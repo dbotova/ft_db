@@ -13,9 +13,7 @@
 #include "ft_db.h"
 
 void print_db(t_db *db)
-{
-	system("clear");
-	
+{	
 	TAB_DELIMETR;
 	TAB_HEADER;
 	TAB_DELIMETR;

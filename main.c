@@ -12,51 +12,27 @@
 
 #include "ft_db.h"
 
-void print_dbmenu(void)
-{
-	printf("[1] Create new record\n");
-	printf("[2] View records\n");
-	printf("[3] Search records\n");
-	printf("[4] Export database\n");
-	printf("[5] Back to Main Menu\n");
-	printf("[6] Exit\n\n");
-	printf(PROMPT);
-}
-
-void print_mmenu(void)
-{
-	printf("[1] Create new database\n");
-	printf("[2] Open database\n");
-	printf("[3] Exit\n\n");
-	printf(PROMPT);
-}
-
 void open_db(t_db *db)
 {
-	if (!db)
-		db = new_node();
-
 	char *db_name = (char *)malloc(sizeof(char) * BUFF_LEN);
 	printf("Enter a name: ");
 	scanf("%s", db_name);
-	deserialize_db(db, db_name);
+	db = deserialize_db(db, db_name);
 
 	int user_input = 0;
 	while (42)
 	{
-		print_dbmenu();
+		print_dbmenu(db);
 		scanf("%d", &user_input);
 		if (user_input == 1)
 			db = create_record(db);
 		if (user_input == 2)
-			print_db(db);
-		if (user_input == 3)
 			NOT_DONE;
-		if (user_input == 4)
+		if (user_input == 3)
 			serialize_db(db, db_name);
-		if (user_input == 5)
+		if (user_input == 4)
 			return ;
-		if (user_input == 6)
+		if (user_input == 5)
 			exit (0);
 	}
 	SMART_FREE(db_name);
@@ -72,19 +48,17 @@ void create_newdb(t_db *db)
 	scanf("%s", db_name);
 	while (42)
 	{
-		print_dbmenu();
+		print_dbmenu(db);
 		scanf("%d", &user_input);
 		if (user_input == 1)
 			db = create_record(db);
 		if (user_input == 2)
-			print_db(db);
-		if (user_input == 3)
 			NOT_DONE;
-		if (user_input == 4)
+		if (user_input == 3)
 			serialize_db(db, db_name);
-		if (user_input == 5)
+		if (user_input == 4)
 			return ;
-		if (user_input == 6)
+		if (user_input == 5)
 			exit (0);
 	}
 	SMART_FREE(db_name);
@@ -95,6 +69,7 @@ int main (void)
 	int user_input = 0;
 	t_db *db = NULL;
 
+	system("clear");
 	while (42)
 	{
 		print_mmenu();

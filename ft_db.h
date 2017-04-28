@@ -41,9 +41,12 @@ t_db *new_node(void);
 void free_node(t_db *node);
 void free_db(t_db **db);
 void add_node(t_db **db, char *name, char *age, char *school);
+void add_node_from_file(t_db **db, char *name, char *age, char *school, int id);
 void serialize_db(t_db *db, char *filename);
-void deserialize_db(t_db *db, char *path);
+t_db *deserialize_db(t_db *db, char *path);
 t_db *create_record(t_db *db);
 void print_db(t_db *db);
+void print_dbmenu(t_db *db);
+void print_mmenu(void);
 
 #endif

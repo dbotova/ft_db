@@ -25,6 +25,7 @@ static int db_len(t_db *db)
 		size += db->age_len;
 		size += db->school_len;
 		size += sizeof(db->id);
+		size += db->id;
 		db = db->next;
 	}
 	return (size);
@@ -41,16 +42,16 @@ void serialize_db(t_db *db, char *filename)
 	while(db)
 	{
 		memcpy(&buffer[seeker], &db->id, sizeof(db->id));
-		seeker += sizeof(db->id);
+		seeker += sizeof(int);
 		
 		memcpy(&buffer[seeker], &db->name_len, sizeof(db->name_len));
-		seeker += sizeof(db->name_len);
+		seeker += sizeof(int);
 
 		memcpy(&buffer[seeker], &db->age_len, sizeof(db->age_len));
-		seeker += sizeof(db->age_len);
+		seeker += sizeof(int);
 
 		memcpy(&buffer[seeker], &db->school_len, sizeof(db->school_len));
-		seeker += sizeof(db->school_len);
+		seeker += sizeof(int);
 
 		memcpy(&buffer[seeker], db->name, db->name_len);
 		seeker += db->name_len;

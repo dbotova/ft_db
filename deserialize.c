@@ -24,7 +24,7 @@ static int file_size(char *path)
     return (size);
 }
 
-void deserialize_db(t_db *db, char *path)
+t_db *deserialize_db(t_db *db, char *path)
 {
 	FILE *fp;
 	unsigned int len = file_size(path);
@@ -39,7 +39,7 @@ void deserialize_db(t_db *db, char *path)
 
 	fp = fopen(path, "rb");
 	if (!fp)
-		return ;
+		return NULL;
 	while (done < len)
 	{
 		// read the sizes of fields
@@ -50,21 +50,25 @@ void deserialize_db(t_db *db, char *path)
 
 		//allocate memory
 		name = (char *)malloc(sizeof(char) * name_len + 1);
+		name[name_len] = 0;
 		age = (char *)malloc(sizeof(char) * age_len + 1);
+		age[age_len] = 0;
 		school = (char *)malloc(sizeof(char) * school_len + 1);
+		school[school_len] = 0;
 
 		//read data for fields
 		fread(name, name_len, 1, fp);
 		fread(age, age_len, 1, fp);
 		fread(school, school_len, 1, fp);
 
-		done += name_len + age_len + school_len;
+		done += (name_len + 1) + (age_len + 1) + (school_len + 1) + id;
 		done += sizeof(name_len) + sizeof(age_len) + sizeof(school_len) + sizeof(id);
-		add_node(&db, name, age, school);
+		add_node_from_file(&db, name, age, school, id);
 		
 		SMART_FREE(name);
 		SMART_FREE(age);
 		SMART_FREE(school);
 	}
 	fclose(fp);
+	return (db);
 }
