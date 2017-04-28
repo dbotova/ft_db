@@ -19,23 +19,8 @@ void open_db(t_db *db)
 	scanf("%s", db_name);
 	db = deserialize_db(db, db_name);
 
-	//int user_input = 0;
 	print_dbmenu(db, db_name);
-	// while (42)
-	// {
-	// 	print_dbmenu(db);
-	// 	scanf("%d", &user_input);
-	// 	if (user_input == 1)
-	// 		db = create_record(db);
-	// 	if (user_input == 2)
-	// 		NOT_DONE;
-	// 	if (user_input == 3)
-	// 		serialize_db(db, db_name);
-	// 	if (user_input == 4)
-	// 		return ;
-	// 	if (user_input == 5)
-	// 		exit (0);
-	// }
+	
 	SMART_FREE(db_name);
 	free_db(&db);
 }
@@ -48,21 +33,7 @@ void create_newdb(t_db *db)
 	printf("Enter a name for your database: ");
 	scanf("%s", db_name);
 	print_dbmenu(db, db_name);
-	// while (42)
-	// {
-	// 	print_dbmenu(db);
-	// 	scanf("%d", &user_input);
-	// 	if (user_input == 1)
-	// 		db = create_record(db);
-	// 	if (user_input == 2)
-	// 		NOT_DONE;
-	// 	if (user_input == 3)
-	// 		serialize_db(db, db_name);
-	// 	if (user_input == 4)
-	// 		return ;
-	// 	if (user_input == 5)
-	// 		exit (0);
-	// }
+	
 	SMART_FREE(db_name);
 }
 

@@ -36,7 +36,7 @@ typedef struct		s_db
 	size_t school_len;
 	struct s_db *next;
 	struct s_db *prev;
-	struct s_db dictionary[DICTIONARY_SIZE];
+	//struct s_db dictionary[DICTIONARY_SIZE];
 }					t_db;
 
 t_db *new_node(void);

@@ -67,9 +67,9 @@ void add_node(t_db **db, char *name, char *age, char *school)
 	(*db)->next->name = strdup(name);
 	(*db)->next->age = strdup(age);
 	(*db)->next->school = strdup(school);
-	(*db)->next->name_len = strlen((*db)->name);
-	(*db)->next->age_len = strlen((*db)->age);
-	(*db)->next->school_len = strlen((*db)->school);
+	(*db)->next->name_len = strlen((*db)->next->name);
+	(*db)->next->age_len = strlen((*db)->next->age);
+	(*db)->next->school_len = strlen((*db)->next->school);
 	(*db)->next->id = (*db)->id + 1;
 }
 
@@ -94,9 +94,9 @@ void add_node_from_file(t_db **db, char *name, char *age, char *school, int id)
 	(*db)->next->name = strdup(name);
 	(*db)->next->age = strdup(age);
 	(*db)->next->school = strdup(school);
-	(*db)->next->name_len = strlen((*db)->name);
-	(*db)->next->age_len = strlen((*db)->age);
-	(*db)->next->school_len = strlen((*db)->school);
+	(*db)->next->name_len = strlen((*db)->next->name);
+	(*db)->next->age_len = strlen((*db)->next->age);
+	(*db)->next->school_len = strlen((*db)->next->school);
 	(*db)->next->id = id;
 }
 

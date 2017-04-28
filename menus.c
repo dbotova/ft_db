@@ -49,11 +49,11 @@ void print_debugmenu(t_db *db)
 
 void print_dbmenu(t_db *db, char *db_name)
 {
-	//system("clear");
 	int user_input = 0;
 
 	while (42)
 	{
+		system("clear");
 		printf("\n");
 		print_db(db);
 
