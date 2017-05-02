@@ -59,6 +59,7 @@ void add_tab(t_db *db, char *name);
 void add_cell(t_tab *tab, unsigned int id, char *data);
 
 void print_tabs(t_db *db);
+void print_records(t_db *db);
 void print_dbmenu(t_db *db, char *db_name);
 void print_mmenu(void);
 

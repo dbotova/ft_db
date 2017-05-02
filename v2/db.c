@@ -36,11 +36,12 @@ void add_tab(t_db *db, char *name)
 {
 	db->last_id += 1;
 	
-	unsigned int new_hash = hash(name);
-	if (db->tabs[new_hash].name[0] != 0 && new_hash < DICTIONARY_SIZE)
-		new_hash++;
-	new_tab(&db->tabs[new_hash], name);
+	// unsigned int new_hash = hash(name);
+	// if (db->tabs[new_hash].name[0] != 0 && new_hash < DICTIONARY_SIZE)
+	// 	new_hash++;
+	// new_tab(&db->tabs[new_hash], name);
 	db->count++;
+	new_tab(&db->tabs[db->count - 1], name);
 
 }
 

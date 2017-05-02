@@ -22,31 +22,22 @@ void print_tabs(t_db *db)
 		return ;
 	}
 
-	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
-	{
-		if (db->tabs[i].name[0] != 0)
-			printf("|%-19s", db->tabs[i].name);
-	}
+	for (unsigned int i = 0; i < db->count; i++)
+		printf("|%-19s", db->tabs[i].name);
 	printf("|\n");
+	print_records(db);
 	TAB_DELIMETR;
 }
 
 void print_records(t_db *db)
 {
-	if (db->tabs.count != 0)
+	for (unsigned int i = 0; i < db->last_id; i++)
 	{
-		for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
-		{
-			if (db->tabs[i].name[0] != 0)
-			{
-				for (unsigned int j = 0; j < DICTIONARY_SIZE; j++)
-				{
-					if (db->tabs[i].data[j].data != 0)
-						printf("|%-19s", db->tabs[i].data[j].data);
-				}
-			}
-		}
+		for (unsigned int j = 0; j < db->count; j++)
+			printf("|%-19s", db->tabs[j].data[i].data);
+		printf("|\n");
 	}
+	printf("|\n");
 }
 
 void create_record(t_db *db)
@@ -59,8 +50,9 @@ void create_record(t_db *db)
 	printf("Enter data: ");
 	scanf("%s", data);
 
-	unsigned int new_hash = hash(name);
-	add_cell(db->tabs[new_hash], db->last_id, data);
+	unsigned int new_hash = hash(tab_name);
+
+	add_cell(&db->tabs[new_hash], db->last_id, data);
 
 	SMART_FREE(tab_name);
 	SMART_FREE(data);

@@ -23,7 +23,7 @@ void print_debugmenu(t_db *db)
 
 		printf("\n\n");
 		printf("%-13s", "[HASH (1)]");
-		printf("%-15s", "[... (2)]");
+		printf("%-15s", "[DB STR (2)]");
 		printf("%-15s", "[... (3)]");
 		printf("%-12s", "[BACK (4)]");
 		printf("%-13s\n", "[EXIT (5)]");
@@ -38,7 +38,10 @@ void print_debugmenu(t_db *db)
 			printf("%u\n", hash(tmp));
 		}
 		if (user_input == 2)
-			NOT_DONE;
+		{
+			printf("count: %u\n", db->count);
+			printf("last_id: %u\n", db->last_id);
+		}
 		if (user_input == 3)
 			NOT_DONE;
 		if (user_input == 4)
@@ -65,6 +68,7 @@ void print_dbmenu(t_db *db, char *db_name)
 
 		printf("\n\n");
 		printf("%-13s", "[ADD TAB(1)]");
+		printf("%-20s", "[ADD RECORD(20)]");
 		printf("%-20s", "[DELETE TAB(11)]");
 		printf("%-15s", "[SEARCH (2)]");
 		printf("%-15s", "[EXPORT (3)]");
@@ -79,6 +83,8 @@ void print_dbmenu(t_db *db, char *db_name)
 			create_tab(db);
 		if (user_input == 11)
 			delete_tab(db);
+		if (user_input == 20)
+			create_record(db);
 		if (user_input == 2)
 			NOT_DONE;
 		if (user_input == 3)
