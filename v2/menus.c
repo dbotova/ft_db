@@ -45,7 +45,7 @@ void print_debugmenu(t_db *db)
 			return ;
 		if (user_input == 5)
 		{
-			SMART_FREE(db);
+			//SMART_FREE(db);
 			exit (0);
 		}
 	}
@@ -65,6 +65,7 @@ void print_dbmenu(t_db *db, char *db_name)
 
 		printf("\n\n");
 		printf("%-13s", "[ADD TAB(1)]");
+		printf("%-13s", "[DELETE TAB(11)]");
 		printf("%-15s", "[SEARCH (2)]");
 		printf("%-15s", "[EXPORT (3)]");
 		printf("%-12s", "[BACK (4)]");
@@ -76,6 +77,8 @@ void print_dbmenu(t_db *db, char *db_name)
 		scanf("%d", &user_input);
 		if (user_input == 1)
 			create_tab(db);
+		if (user_input == 11)
+			delete_tab(db);
 		if (user_input == 2)
 			NOT_DONE;
 		if (user_input == 3)
@@ -84,7 +87,7 @@ void print_dbmenu(t_db *db, char *db_name)
 			return ;
 		if (user_input == 5)
 		{
-			SMART_FREE(db);
+			//SMART_FREE(db);
 			exit (0);
 		}
 		if (user_input == 0)

@@ -31,6 +31,24 @@ void print_tabs(t_db *db)
 	TAB_DELIMETR;
 }
 
+// void print_records(t_db *db)
+// {
+// 	if (db->tabs.count != 0)
+// 	{
+// 		for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
+// 		{
+// 			if (db->tabs[i].name[0] != 0)
+// 			{
+// 				for (unsigned int j = 0; j < DICTIONARY_SIZE; j++)
+// 				{
+// 					if (db->tabs[i].data[j].data != 0)
+// 						printf("|%-19s", db->tabs[i].data[j].data);
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
 // t_db *create_record(t_db *db)
 // {
 // 	char *name = (char*)malloc(sizeof(char) * BUFF_LEN);

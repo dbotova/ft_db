@@ -47,6 +47,7 @@ typedef struct		s_db
 
 
 void create_tab(t_db *db);
+void delete_tab(t_db *db);
 
 void serialize_db(t_db *db, char *filename);
 t_db *deserialize_db(t_db *db, char *path);

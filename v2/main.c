@@ -25,7 +25,6 @@ void open_db(t_db *db)
 	print_dbmenu(db, db_name);
 	
 	SMART_FREE(db_name);
-	SMART_FREE(db);
 }
 
 void create_newdb(t_db *db)
@@ -57,7 +56,7 @@ int main (void)
 		if (user_input == 3)
 			return (0);
 	}
-	if (db)
-		SMART_FREE(db);
+	// if (db)
+	// 	SMART_FREE(db);
 	return (0);
 }
