@@ -31,42 +31,37 @@ void print_tabs(t_db *db)
 	TAB_DELIMETR;
 }
 
-// void print_records(t_db *db)
-// {
-// 	if (db->tabs.count != 0)
-// 	{
-// 		for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
-// 		{
-// 			if (db->tabs[i].name[0] != 0)
-// 			{
-// 				for (unsigned int j = 0; j < DICTIONARY_SIZE; j++)
-// 				{
-// 					if (db->tabs[i].data[j].data != 0)
-// 						printf("|%-19s", db->tabs[i].data[j].data);
-// 				}
-// 			}
-// 		}
-// 	}
-// }
+void print_records(t_db *db)
+{
+	if (db->tabs.count != 0)
+	{
+		for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
+		{
+			if (db->tabs[i].name[0] != 0)
+			{
+				for (unsigned int j = 0; j < DICTIONARY_SIZE; j++)
+				{
+					if (db->tabs[i].data[j].data != 0)
+						printf("|%-19s", db->tabs[i].data[j].data);
+				}
+			}
+		}
+	}
+}
 
-// t_db *create_record(t_db *db)
-// {
-// 	char *name = (char*)malloc(sizeof(char) * BUFF_LEN);
-// 	char *age = (char*)malloc(sizeof(char) * BUFF_LEN);
-// 	char *school = (char*)malloc(sizeof(char) * BUFF_LEN);
+void create_record(t_db *db)
+{
+	char *tab_name = (char*)malloc(sizeof(char) * BUFF_LEN);
+	char *data = (char*)malloc(sizeof(char) * BUFF_LEN);
+	
+	printf("Enter table name: ");
+	scanf("%s", tab_name);
+	printf("Enter data: ");
+	scanf("%s", data);
 
-// 	printf("Enter new name: ");
-// 	scanf("%s", name);
-// 	printf("Enter age: ");
-// 	scanf("%s", age);
-// 	printf("Enter school: ");
-// 	scanf("%s", school);
+	unsigned int new_hash = hash(name);
+	add_cell(db->tabs[new_hash], db->last_id, data);
 
-// 	add_node(&db, name, age, school);
-
-// 	SMART_FREE(name);
-// 	SMART_FREE(age);
-// 	SMART_FREE(school);
-
-// 	return (db);
-// }
+	SMART_FREE(tab_name);
+	SMART_FREE(data);
+}

@@ -65,12 +65,12 @@ void print_dbmenu(t_db *db, char *db_name)
 
 		printf("\n\n");
 		printf("%-13s", "[ADD TAB(1)]");
-		printf("%-13s", "[DELETE TAB(11)]");
+		printf("%-20s", "[DELETE TAB(11)]");
 		printf("%-15s", "[SEARCH (2)]");
 		printf("%-15s", "[EXPORT (3)]");
 		printf("%-12s", "[BACK (4)]");
 		printf("%-13s\n", "[EXIT (5)]");
-		printf("%s\n", "[DEBUG (0)]");
+		printf("\n%s\n", "[DEBUG (0)]");
 		printf("\n\n");
 		printf(PROMPT);
 

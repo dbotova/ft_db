@@ -22,7 +22,6 @@
 # define NOT_DONE {printf("UNDER IMPLEMENTATION\n"); sleep(2);}
 # define BUFF_LEN 20
 # define TAB_DELIMETR printf("-----------------------------------------------------------\n")
-//# define TAB_HEADER printf("|%-9s|%-18s|%-9s|%-18s|\n", "ID", "NAME", "AGE", "SCHOOL");
 # define DICTIONARY_SIZE 1000
 
 typedef struct		s_cell
@@ -51,6 +50,7 @@ void delete_tab(t_db *db);
 
 void serialize_db(t_db *db, char *filename);
 t_db *deserialize_db(t_db *db, char *path);
+void create_record(t_db *db);
 
 t_db *init_db(void);
 void new_cell(t_cell *new, unsigned int id, char *data);

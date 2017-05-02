@@ -46,9 +46,6 @@ void add_tab(t_db *db, char *name)
 
 void add_cell(t_tab *tab, unsigned int id, char *data)
 {
-	unsigned int new_hash = hash(data);
-	if (tab[new_hash].name[0] != 0 && new_hash < DICTIONARY_SIZE)
-		new_hash++;
-	new_cell(&tab->data[new_hash], id, data);
+	new_cell(&tab->data[id - 1], id, data);
 	tab->count++;
 }
