@@ -23,6 +23,7 @@
 # define BUFF_LEN 20
 # define TAB_DELIMETR printf("-----------------------------------------------------------\n")
 # define DICTIONARY_SIZE 1000
+# define MAGIC_NUMBER 42
 
 typedef struct		s_cell
 {

@@ -60,7 +60,8 @@ void print_debugmenu(t_db *db)
 			return ;
 		if (user_input == 5)
 		{
-			//SMART_FREE(db);
+			if (db)
+				db = NULL;
 			exit (0);
 		}
 	}
@@ -95,9 +96,9 @@ void print_dbmenu(t_db *db, char *db_name)
 		if (user_input == 1)
 			create_tab(db);
 		if (user_input == 2)
-			delete_tab(db);
-		if (user_input == 3)
 			add_record_to_tab(db);
+		if (user_input == 3)
+			delete_tab(db);
 		if (user_input == 4)
 			add_record_to_db(db);
 		if (user_input == 5)
@@ -108,7 +109,8 @@ void print_dbmenu(t_db *db, char *db_name)
 			return ;
 		if (user_input == 8)
 		{
-			//SMART_FREE(db);
+			if (db)
+				db = NULL;
 			exit (0);
 		}
 		if (user_input == 0)

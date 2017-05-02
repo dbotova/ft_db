@@ -20,8 +20,7 @@ static unsigned int mix(unsigned int internal_state, unsigned int message_block)
 
 unsigned int hash(char *message)
 {
-	//unsigned int internal_state = 0xA5A5A5A5; // IV: A magic number
-	unsigned int internal_state = 42; // IV: A magic number
+	unsigned int internal_state = MAGIC_NUMBER;
 	unsigned int message_block = 0;
 	size_t message_length = strlen(message);
 

@@ -30,7 +30,6 @@ void open_db(t_db *db)
 void create_newdb(t_db *db)
 {
 	char *db_name = (char *)malloc(sizeof(char) * BUFF_LEN);
-	//int user_input = 0;
 
 	printf("Enter a name for your database: ");
 	scanf("%s", db_name);
@@ -56,7 +55,5 @@ int main (void)
 		if (user_input == 3)
 			return (0);
 	}
-	// if (db)
-	// 	SMART_FREE(db);
 	return (0);
 }
