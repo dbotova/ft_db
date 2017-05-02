@@ -15,44 +15,40 @@
 t_db *init_db(void)
 {
 	t_db *new = (t_db*)malloc(sizeof(t_db));
-	new->tabs = NULL;
-	new->last_id = -1;
+	new->last_id = 0;
+	new->count = 0;
 
 	return (new);
 }
 
-t_cell *new_cell(int id, char *data)
+void new_cell(t_cell *new, unsigned int id, char *data)
 {
-	t_cell *new = (t_cell*)malloc(sizeof(t_cell));
-	memset(&new->data, 0, BUFF_LEN);
-	new->data = strdup(data);
+	strcat(new->data, data);
 	new->id = id;
-
-	return (new);
 }
 
-t_tab *new_tab(char *name)
+void new_tab(t_tab *new, char *new_name)
 {
-	t_tab *new = (t_tab*)malloc(sizeof(t_tab));
-	memset(&new->name, 0, BUFF_LEN);
-	new->name = strdup(name);
-	size = DICTIONARY_SIZE;
-	new->next = NULL;
-	new->prev = NULL;
-
-	return (new);
+	strcat(new->name, new_name);
 }
 
 void add_tab(t_db *db, char *name)
 {
 	db->last_id += 1;
-	t_tab *cur = db->tabs;
-	if (!cur)
-	{
-		db->tabs = new_tab(name);
-		return ;
-	}
-	while (cur->next)
-		cur = cur->next;
-	cur->next = new_tab(name);
+	
+	unsigned int new_hash = hash(name);
+	if (db->tabs[new_hash].name[0] != 0 && new_hash < DICTIONARY_SIZE)
+		new_hash++;
+	new_tab(&db->tabs[new_hash], name);
+	db->count++;
+
+}
+
+void add_cell(t_tab *tab, unsigned int id, char *data)
+{
+	unsigned int new_hash = hash(data);
+	if (tab[new_hash].name[0] != 0 && new_hash < DICTIONARY_SIZE)
+		new_hash++;
+	new_cell(&tab->data[new_hash], id, data);
+	tab->count++;
 }

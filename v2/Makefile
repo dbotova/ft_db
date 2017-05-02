@@ -13,10 +13,11 @@
 OBJS =		main.o \
 			deserialize.o \
 			serialize.o \
-			dllist.o \
+			db.o \
 			records.o \
 			menus.o \
-			dictionary.o
+			dictionary.o \
+			tabs.o
 
 HEADERS =	ft_db.h
 

@@ -19,7 +19,7 @@ void print_debugmenu(t_db *db)
 	while (42)
 	{
 		printf("\n");
-		print_db(db);
+		print_tabs(db);
 
 		printf("\n\n");
 		printf("%-13s", "[HASH (1)]");
@@ -32,7 +32,11 @@ void print_debugmenu(t_db *db)
 
 		scanf("%d", &user_input);
 		if (user_input == 1)
-			printf("%u\n", hash(db));
+		{
+			char *tmp = (char*)malloc(sizeof(char) * BUFF_LEN);
+			scanf("%s", tmp);
+			printf("%u\n", hash(tmp));
+		}
 		if (user_input == 2)
 			NOT_DONE;
 		if (user_input == 3)
@@ -41,7 +45,7 @@ void print_debugmenu(t_db *db)
 			return ;
 		if (user_input == 5)
 		{
-			free_db(&db);
+			SMART_FREE(db);
 			exit (0);
 		}
 	}
@@ -50,15 +54,17 @@ void print_debugmenu(t_db *db)
 void print_dbmenu(t_db *db, char *db_name)
 {
 	int user_input = 0;
+	if (!db)
+		db = init_db();
 
 	while (42)
 	{
 		system("clear");
 		printf("\n");
-		print_db(db);
+		print_tabs(db);
 
 		printf("\n\n");
-		printf("%-13s", "[ADD (1)]");
+		printf("%-13s", "[ADD TAB(1)]");
 		printf("%-15s", "[SEARCH (2)]");
 		printf("%-15s", "[EXPORT (3)]");
 		printf("%-12s", "[BACK (4)]");
@@ -69,7 +75,7 @@ void print_dbmenu(t_db *db, char *db_name)
 
 		scanf("%d", &user_input);
 		if (user_input == 1)
-			db = create_record(db);
+			create_tab(db);
 		if (user_input == 2)
 			NOT_DONE;
 		if (user_input == 3)
@@ -78,7 +84,7 @@ void print_dbmenu(t_db *db, char *db_name)
 			return ;
 		if (user_input == 5)
 		{
-			free_db(&db);
+			SMART_FREE(db);
 			exit (0);
 		}
 		if (user_input == 0)

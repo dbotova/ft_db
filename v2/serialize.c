@@ -12,49 +12,18 @@
 
 #include "ft_db.h"
 
-static int db_len(t_db *db)
-{
-	int size = 0;
-	t_tab *cur = db->tabs;
-
-	size += sizeof(db->last_id);
-	while(cur)
-	{
-		size += sizeof(cur->size);
-		size += sizeof(cur->name);
-		size += sizeof(cur->data);
-		cur = cur->next;
-	}
-	return (size);
-}
-
 void serialize_db(t_db *db, char *filename)
 {
 	FILE *fp;
-	char *buffer = NULL;
-	unsigned int len = db_len(db);
-	buffer = (char *)malloc(sizeof(len));
-	int seeker = 0;
-	t_tab *cur = db->tabs;
+	char *buffer = (char*)malloc(sizeof(t_db));
 
-	memcpy(&buffer[seeker], &db->last_id, sizeof(db->last_id));
-	seeker += sizeof(int);
-
-	while(cur)
-	{
-		memcpy(&buffer[seeker], cur->size, sizeof(unsigned int));
-		seeker += sizeof(unsigned int);
-
-		memcpy(&buffer[seeker], cur->name, BUFF_LEN);
-		seeker += BUFF_LEN;
-
-		cur = cur->next;
-	}
+	memcpy(&buffer, &db, sizeof(db));
 
 	fp = fopen(filename, "wb+");
 	if (!fp)
 		perror("open file");
 	rewind(fp);
-	fwrite(buffer, len, 1, fp);
+	fwrite(buffer, sizeof(t_db), 1, fp);
+	SMART_FREE(buffer);
 	fclose(fp);
 }

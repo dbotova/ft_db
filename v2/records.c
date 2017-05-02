@@ -15,18 +15,17 @@
 void print_tabs(t_db *db)
 {	
 	TAB_DELIMETR;
-	if (!db)
+	if (db->count == 0)
 	{
 		printf("|%35s%-22s|\n", "***EMPTY***", "");
 		TAB_DELIMETR;
 		return ;
 	}
-	t_tab *cur = db->tabs;
 
-	while (cur)
+	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
 	{
-		printf("|%-20d", cur->name);
-		cur = cur->next;
+		if (db->tabs[i].name[0] != 0)
+			printf("|%-19s", db->tabs[i].name);
 	}
 	printf("|\n");
 	TAB_DELIMETR;
