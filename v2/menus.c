@@ -23,8 +23,8 @@ void print_debugmenu(t_db *db)
 
 		printf("\n\n");
 		printf("%-13s", "[HASH (1)]");
-		printf("%-15s", "[DB STR (2)]");
-		printf("%-15s", "[... (3)]");
+		printf("%-15s", "[DB STRUCT (2)]");
+		printf("%-15s", "[SHOW TABS (3)]");
 		printf("%-12s", "[BACK (4)]");
 		printf("%-13s\n", "[EXIT (5)]");
 		printf("\n\n");
@@ -43,7 +43,19 @@ void print_debugmenu(t_db *db)
 			printf("last_id: %u\n", db->last_id);
 		}
 		if (user_input == 3)
-			NOT_DONE;
+		{
+			printf("count: %u\n", db->count);
+			printf("last_id: %u\n", db->last_id);
+
+			for (unsigned int i = 0; i < db->count; i++)
+			{
+				printf("TAB: %s\n", db->tabs[i].name);
+				for (unsigned int j = 0; db->tabs[i].data[j].data[0] != 0; j++)
+					printf("id: %u data: %s\n", db->tabs[i].data[j].id, db->tabs[i].data[j].data);
+			}
+
+			printf("\n");
+		}
 		if (user_input == 4)
 			return ;
 		if (user_input == 5)
@@ -68,8 +80,8 @@ void print_dbmenu(t_db *db, char *db_name)
 
 		printf("\n\n");
 		printf("%-13s", "[ADD TAB(1)]");
-		printf("%-20s", "[ADD RECORD(20)]");
-		printf("%-20s", "[DELETE TAB(11)]");
+		printf("%-20s", "[ADD TO TABLE(20)]");
+		printf("%-20s\n", "[DELETE TAB(11)]");
 		printf("%-15s", "[SEARCH (2)]");
 		printf("%-15s", "[EXPORT (3)]");
 		printf("%-12s", "[BACK (4)]");

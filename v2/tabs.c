@@ -13,17 +13,16 @@ void create_tab(t_db *db)
 
 void delete_tab(t_db *db)
 {
-	char *name = (char*)malloc(sizeof(char) * BUFF_LEN);
+	char *tab_name = (char*)malloc(sizeof(char) * BUFF_LEN);
 
 	printf("Enter a name: \n");
-	scanf("%s", name);
+	scanf("%s", tab_name);
 
-	unsigned int new_hash = hash(name);
-	if (strcmp(db->tabs[new_hash].name, name) == 0)
-	{
-		memset(&db->tabs[new_hash], 0, sizeof(t_tab));
-		db->count--;
-	}
+	unsigned int i = 0;
+	while (strcmp(db->tabs[i].name, tab_name) != 0) i++;
 
-	SMART_FREE(name);
+	memset(&db->tabs[i], 0, sizeof(t_tab));
+	db->count--;
+
+	SMART_FREE(tab_name);
 }
