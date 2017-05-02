@@ -50,13 +50,14 @@ void delete_tab(t_db *db);
 
 void serialize_db(t_db *db, char *filename);
 t_db *deserialize_db(t_db *db, char *path);
-void create_record(t_db *db);
+void add_record_to_tab(t_db *db);
+void add_record_to_db(t_db *db);
 
 t_db *init_db(void);
 void new_cell(t_cell *new, unsigned int id, char *data);
 void new_tab(t_tab *new, char *name);
 void add_tab(t_db *db, char *name);
-void add_cell(t_tab *tab, unsigned int id, char *data);
+void add_cell(t_db *db, unsigned int id, char *data, unsigned int idx);
 
 void print_tabs(t_db *db);
 void print_records(t_db *db);

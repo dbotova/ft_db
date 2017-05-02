@@ -44,9 +44,9 @@ void add_tab(t_db *db, char *name)
 
 }
 
-void add_cell(t_tab *tab, unsigned int id, char *data)
+void add_cell(t_db *db, unsigned int id, char *data, unsigned int idx)
 {
-	new_cell(&tab->data[id - 1], id, data);
-	//if (id )
-	tab->count++;
+	new_cell(&db->tabs[idx].data[id - 1], id, data);
+	if (id > db->last_id)
+		db->tabs[idx].count++;
 }

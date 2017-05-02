@@ -79,13 +79,14 @@ void print_dbmenu(t_db *db, char *db_name)
 		print_tabs(db);
 
 		printf("\n\n");
-		printf("%-13s", "[ADD TAB(1)]");
-		printf("%-20s", "[ADD TO TABLE(20)]");
-		printf("%-20s\n", "[DELETE TAB(11)]");
-		printf("%-15s", "[SEARCH (2)]");
-		printf("%-15s", "[EXPORT (3)]");
-		printf("%-12s", "[BACK (4)]");
-		printf("%-13s\n", "[EXIT (5)]");
+		printf("%-20s", "[ADD TAB(1)]");
+		printf("%-20s", "[ADD TO TABLE(2)]");
+		printf("%-20s", "[DELETE TAB(3)]");
+		printf("%-20s\n", "[ADD RECORD(4)]");
+		printf("%-20s", "[SEARCH (5)]");
+		printf("%-20s", "[EXPORT (6)]");
+		printf("%-20s", "[BACK (7)]");
+		printf("%-20s\n", "[EXIT (8)]");
 		printf("\n%s\n", "[DEBUG (0)]");
 		printf("\n\n");
 		printf(PROMPT);
@@ -93,17 +94,19 @@ void print_dbmenu(t_db *db, char *db_name)
 		scanf("%d", &user_input);
 		if (user_input == 1)
 			create_tab(db);
-		if (user_input == 11)
-			delete_tab(db);
-		if (user_input == 20)
-			create_record(db);
 		if (user_input == 2)
-			NOT_DONE;
+			delete_tab(db);
 		if (user_input == 3)
-			serialize_db(db, db_name);
+			add_record_to_tab(db);
 		if (user_input == 4)
-			return ;
+			add_record_to_db(db);
 		if (user_input == 5)
+			NOT_DONE;
+		if (user_input == 6)
+			serialize_db(db, db_name);
+		if (user_input == 7)
+			return ;
+		if (user_input == 8)
 		{
 			//SMART_FREE(db);
 			exit (0);
