@@ -47,10 +47,10 @@ void print_debugmenu(t_db *db)
 			printf("count: %u\n", db->count);
 			printf("last_id: %u\n", db->last_id);
 
-			for (unsigned int i = 0; i < db->count; i++)
+			for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
 			{
 				printf("TAB: %s\n", db->tabs[i].name);
-				for (unsigned int j = 0; db->tabs[i].data[j].data[0] != 0; j++)
+				for (unsigned int j = 0; j < DICTIONARY_SIZE; j++)
 					printf("id: %u data: %s\n", db->tabs[i].data[j].id, db->tabs[i].data[j].data);
 			}
 
@@ -59,6 +59,38 @@ void print_debugmenu(t_db *db)
 		if (user_input == 4)
 			return ;
 		if (user_input == 5)
+		{
+			if (db)
+				db = NULL;
+			exit (0);
+		}
+	}
+}
+
+void print_search_menu(t_db *db)
+{
+	int user_input = 0;
+
+	while (42)
+	{
+		system("clear");
+		printf("\n");
+
+		printf("%-20s", "[SEARCH RECORD(1)]");
+		printf("%-20s", "[SEARCH TABLE(2)]");
+		printf("%-20s", "[BACK (3)]");
+		printf("%-20s\n", "[EXIT (4)]");
+		printf("\n\n");
+		printf(PROMPT);
+
+		scanf("%d", &user_input);
+		if (user_input == 1)
+			search_record(db);
+		if (user_input == 2)
+			search_tab(db);
+		if (user_input == 3)
+			return ;
+		if (user_input == 4)
 		{
 			if (db)
 				db = NULL;
@@ -84,7 +116,7 @@ void print_dbmenu(t_db *db, char *db_name)
 		printf("%-20s", "[ADD TO TABLE(2)]");
 		printf("%-20s", "[DELETE TAB(3)]");
 		printf("%-20s\n", "[ADD RECORD(4)]");
-		printf("%-20s", "[SEARCH (5)]");
+		printf("%-20s", "[SEARCH(5)]");
 		printf("%-20s", "[EXPORT (6)]");
 		printf("%-20s", "[BACK (7)]");
 		printf("%-20s\n", "[EXIT (8)]");
@@ -102,7 +134,7 @@ void print_dbmenu(t_db *db, char *db_name)
 		if (user_input == 4)
 			add_record_to_db(db);
 		if (user_input == 5)
-			NOT_DONE;
+			print_search_menu(db);;
 		if (user_input == 6)
 			serialize_db(db, db_name);
 		if (user_input == 7)

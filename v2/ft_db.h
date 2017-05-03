@@ -25,6 +25,12 @@
 # define DICTIONARY_SIZE 1000
 # define MAGIC_NUMBER 42
 
+typedef struct 		s_map
+{
+	long long		index;
+	char			name[BUFF_LEN];
+}					t_map;
+
 typedef struct		s_cell
 {
 	unsigned int 	id;
@@ -36,11 +42,13 @@ typedef struct		s_tab
 	char 			name[BUFF_LEN];
 	unsigned int 	count;
 	t_cell 			data[DICTIONARY_SIZE];
+	t_map			map[DICTIONARY_SIZE];
 }					t_tab;
 
 typedef struct		s_db
 {
 	t_tab 			tabs[DICTIONARY_SIZE];
+	t_map 			map[DICTIONARY_SIZE];
 	unsigned int 	count;
 	unsigned int 	last_id;
 }					t_db;
@@ -53,6 +61,10 @@ void serialize_db(t_db *db, char *filename);
 t_db *deserialize_db(t_db *db, char *path);
 void add_record_to_tab(t_db *db);
 void add_record_to_db(t_db *db);
+void search_record(t_db *db);
+void search_tab(t_db *db);
+void print_tab(t_db *db, long long index);
+void print_record(t_db *db, long long index);
 
 t_db *init_db(void);
 void new_cell(t_cell *new, unsigned int id, char *data);

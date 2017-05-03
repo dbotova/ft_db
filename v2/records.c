@@ -94,3 +94,94 @@ void add_record_to_db(t_db *db)
 	}
 	
 }
+
+void print_record(t_db *db, long long index)
+{
+	if (index < 0)
+		return ;
+	
+	for (unsigned int i = 0; i <= db->count; i++)
+		printf("--------------------");
+	printf("-\n");
+	printf("|%-19s", "ID");
+	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
+	{
+		if (db->tabs[i].name[0] != 0)
+			printf("|%-19s", db->tabs[i].name);
+	}
+	printf("|\n");
+	for (unsigned int i = 0; i <= db->count; i++)
+		printf("--------------------");
+	printf("-\n");
+	printf("|%-20lld", index + 1);
+	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
+	{
+		if (db->tabs[i].name[0] != 0)
+			printf("|%-19s", db->tabs[i].data[index].data);
+	}
+	printf("|\n");
+	for (unsigned int i = 0; i <= db->count; i++)
+		printf("--------------------");
+	printf("-\n");
+
+}
+
+void print_tab(t_db *db, long long index)
+{
+	if (index < 0)
+		return ;
+	printf("----------------------------------------\n");
+	printf("|%-20s", "ID");
+	printf("|%-20s\n", db->tabs[index].name);
+	printf("----------------------------------------\n");
+	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
+	{
+		if (db->tabs[i].name[0] != 0)
+			printf("|%-20d|%-20s|\n", i + 1, db->tabs[index].data[i].data);
+	}
+	printf("----------------------------------------\n");
+}
+
+void search_tab(t_db *db)
+{
+	char *term = (char*)malloc(sizeof(char) * BUFF_LEN);
+
+	printf("Enter search term: ");
+	scanf("%s", term);
+
+	unsigned int key = hash(term);
+	print_tab(db, db->map[key].index);
+
+	printf("BACK [0] << \n");
+	int tmp = -1;
+	scanf("%d", &tmp);
+	SMART_FREE(term);
+}
+
+void search_record(t_db *db)
+{
+	char *term = (char*)malloc(sizeof(char) * BUFF_LEN);
+
+	printf("Enter search term: ");
+	scanf("%s", term);
+
+	unsigned int key = hash(term);
+	long long index = -1;
+	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
+	{
+		if (db->tabs[i].map[key].name[0] != 0 && strcmp(db->tabs[i].map[key].name, term) == 0)
+		{
+			index = db->tabs[i].map[key].index;
+			print_record(db, index);
+			if (strcmp(db->tabs[i].map[key + 1].name, term) == 0)
+			{
+				key++;
+				i = 0;
+			}
+		}
+	}
+	printf("BACK [0] << \n");
+	int tmp = -1;
+	scanf("%d", &tmp);
+	SMART_FREE(term);
+}

@@ -31,9 +31,15 @@ void delete_tab(t_db *db)
 	}
 
 	unsigned int i = 0;
+	unsigned int key = hash(tab_name);
+	while (strcmp(db->map[key].name, tab_name) != 0) key++;
 	while (strcmp(db->tabs[i].name, tab_name) != 0) i++;
 
+	if (key >= DICTIONARY_SIZE || i >= DICTIONARY_SIZE)
+		return ;
+
 	memset(&db->tabs[i], 0, sizeof(t_tab));
+	memset(&db->map[key], -1, sizeof(t_map));
 	db->count--;
 	SMART_FREE(tab_name);
 }
