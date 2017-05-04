@@ -18,7 +18,8 @@
 # include <sys/stat.h>
 # include <unistd.h>
 # define SMART_FREE(x) {free(x); x = NULL;}
-# define PROMPT "=^..^= : "
+# define PROMPT1 "=^..^= : "
+# define PROMPT2 "=^..^= (try again...) : "
 # define NOT_DONE {printf("UNDER IMPLEMENTATION\n"); sleep(2);}
 # define BUFF_LEN 20
 # define TAB_DELIMETR printf("-----------------------------------------------------------\n")
@@ -75,7 +76,7 @@ void add_cell(t_db *db, unsigned int id, char *data, unsigned int idx);
 void print_tabs(t_db *db);
 void print_records(t_db *db);
 void print_dbmenu(t_db *db, char *db_name);
-void print_mmenu(void);
+void print_mmenu(int flag);
 
 void print_debugmenu(t_db *db);
 unsigned int hash(char *message);

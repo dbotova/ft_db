@@ -28,7 +28,7 @@ void print_debugmenu(t_db *db)
 		printf("%-12s", "[BACK (4)]");
 		printf("%-13s\n", "[EXIT (5)]");
 		printf("\n\n");
-		printf(PROMPT);
+		printf(PROMPT1);
 
 		scanf("%d", &user_input);
 		if (user_input == 1)
@@ -49,9 +49,12 @@ void print_debugmenu(t_db *db)
 
 			for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
 			{
-				printf("TAB: %s\n", db->tabs[i].name);
-				for (unsigned int j = 0; j < DICTIONARY_SIZE; j++)
-					printf("id: %u data: %s\n", db->tabs[i].data[j].id, db->tabs[i].data[j].data);
+				if (db->tabs[i].name[0] != 0)
+				{
+					printf("TAB: %s\n", db->tabs[i].name);
+					for (unsigned int j = 0; j < DICTIONARY_SIZE; j++)
+						printf("id: %u data: %s\n", db->tabs[i].data[j].id, db->tabs[i].data[j].data);
+				}
 			}
 
 			printf("\n");
@@ -69,7 +72,8 @@ void print_debugmenu(t_db *db)
 
 void print_search_menu(t_db *db)
 {
-	int user_input = 0;
+	char user_input[BUFF_LEN] = {0};
+	int flag = 0;
 
 	while (42)
 	{
@@ -81,17 +85,24 @@ void print_search_menu(t_db *db)
 		printf("%-20s", "[BACK (3)]");
 		printf("%-20s\n", "[EXIT (4)]");
 		printf("\n\n");
-		printf(PROMPT);
+		(!flag) ? printf(PROMPT1) : printf(PROMPT2);
 
-		scanf("%d", &user_input);
-		if (user_input == 1)
-			search_record(db);
-		if (user_input == 2)
-			search_tab(db);
-		if (user_input == 3)
-			return ;
-		if (user_input == 4)
+		scanf("%s", user_input);
+		if (!strcmp(user_input, "1"))
 		{
+			search_record(db);
+			flag = 0;
+		}
+		if (!strcmp(user_input, "2"))
+		{
+			search_tab(db);
+			flag = 0;
+		}
+		if (!strcmp(user_input, "3"))
+			return ;
+		if (!strcmp(user_input, "4"))
+		{
+			flag = 0;
 			if (db)
 				db = NULL;
 			exit (0);
@@ -101,7 +112,8 @@ void print_search_menu(t_db *db)
 
 void print_dbmenu(t_db *db, char *db_name)
 {
-	int user_input = 0;
+	char user_input[BUFF_LEN] = {0};
+	int flag = 0;
 	if (!db)
 		db = init_db();
 
@@ -122,43 +134,68 @@ void print_dbmenu(t_db *db, char *db_name)
 		printf("%-20s\n", "[EXIT (8)]");
 		printf("\n%s\n", "[DEBUG (0)]");
 		printf("\n\n");
-		printf(PROMPT);
+		(!flag) ? printf(PROMPT1) : printf(PROMPT2); 
 
-		scanf("%d", &user_input);
-		if (user_input == 1)
+		scanf("%s", user_input);
+		if (!strcmp(user_input, "1"))
+		{
 			create_tab(db);
-		if (user_input == 2)
+			flag = 0;
+		}
+		else if (!strcmp(user_input, "2"))
+		{
 			add_record_to_tab(db);
-		if (user_input == 3)
+			flag = 0;
+		}
+		else if (!strcmp(user_input, "3"))
+		{
 			delete_tab(db);
-		if (user_input == 4)
+			flag = 0;
+		}
+		else if (!strcmp(user_input, "4"))
+		{
 			add_record_to_db(db);
-		if (user_input == 5)
-			print_search_menu(db);;
-		if (user_input == 6)
+			flag = 0;
+		}
+		else if (!strcmp(user_input, "5"))
+		{
+			print_search_menu(db);
+			flag = 0;
+		}
+		else if (!strcmp(user_input, "6"))
+		{
 			serialize_db(db, db_name);
-		if (user_input == 7)
-			return ;
-		if (user_input == 8)
+			flag = 0;
+		}
+		else if (!strcmp(user_input, "7"))
+		{
+			return;
+			flag = 0;
+		}
+		else if (!strcmp(user_input, "8"))
 		{
 			if (db)
 				db = NULL;
+			flag = 0;
 			exit (0);
 		}
-		if (user_input == 0)
+		else if (!strcmp(user_input, "9"))
 		{
 			system("clear");
 			print_debugmenu(db);
+			flag = 0;
 		}
+		else 
+			flag = 1;
 	}
 }
 
-void print_mmenu(void)
+void print_mmenu(int flag)
 {
 	printf("\n\n");
 	printf("%-15s", "[CREATE (1)]");
 	printf("%-12s", "[OPEN (2)]");
 	printf("%s\n", "[EXIT (3)]");
 	printf("\n\n");
-	printf(PROMPT);
+	(!flag) ? printf(PROMPT1) : printf(PROMPT2);
 }

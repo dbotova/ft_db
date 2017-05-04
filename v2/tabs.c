@@ -4,10 +4,10 @@ void create_tab(t_db *db)
 {
 	char *tab_name = (char*)malloc(sizeof(char) * BUFF_LEN);
 
-	printf("Enter a name: \n");
+	printf("Enter a name (0 to cancel): \n");
 	scanf("%s", tab_name);
 
-	if (strcmp(tab_name, "cancel") == 0)
+	if (strcmp(tab_name, "0") == 0)
 	{
 		SMART_FREE(tab_name);
 		return ;
@@ -20,17 +20,30 @@ void create_tab(t_db *db)
 void delete_tab(t_db *db)
 {
 	char *tab_name = (char*)malloc(sizeof(char) * BUFF_LEN);
+	int flag = 0;
+	unsigned int i;
 
-	printf("Enter a name: \n");
-	scanf("%s", tab_name);
-
-	if (strcmp(tab_name, "cancel") == 0)
+	printf("Enter a name (0 to cancel): \n");
+	while (1)
 	{
-		SMART_FREE(tab_name);
-		return ;
+		i = 0;
+		scanf("%s", tab_name);
+		if (!strcmp(tab_name, "0"))
+			return;
+		while (i < db->count)
+			if (!strcmp(db->tabs[i++].name, tab_name))
+			{
+				flag = 1;
+				break;
+			}
+		if (flag)
+			break;
+		else 
+			printf("Invalid table name, please try again...\n");
 	}
 
-	unsigned int i = 0;
+
+	i = 0;
 	unsigned int key = hash(tab_name);
 	while (strcmp(db->map[key].name, tab_name) != 0) key++;
 	while (strcmp(db->tabs[i].name, tab_name) != 0) i++;

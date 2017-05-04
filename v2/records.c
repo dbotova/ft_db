@@ -65,17 +65,29 @@ void add_record_to_tab(t_db *db)
 	char *tab_name = (char*)malloc(sizeof(char) * BUFF_LEN);
 	char *data = (char*)malloc(sizeof(char) * BUFF_LEN);
 	unsigned int id = 0;
-	
+	unsigned int i;
+	int flag = 0;
+
 	printf("Enter table name: ");
-	scanf("%s", tab_name);
+	while (1)
+	{
+		i = 0;
+		scanf("%s", tab_name);
+		unsigned int key = hash(tab_name);
+		if (db->map[key].name[0] != 0 && !strcmp(db->map[key].name, tab_name))
+		{
+			i = db->map[key].index;
+			flag = 1;
+			break ;
+		}
+		else 
+			printf("Invalid table name, please try again...\n");
+	}
 	printf("Enter data: ");
 	scanf("%s", data);
 	printf("Enter id (0 for new record): ");
 	scanf("%u", &id);
-
-	unsigned int i = 0;
-	while (strcmp(db->tabs[i].name, tab_name) != 0) i++;
-
+	
 	if (id == 0)
 		db->last_id++;
 	add_cell(db, id != 0 ? id : db->last_id, data, i);
@@ -130,11 +142,8 @@ void print_tab(t_db *db, long long index)
 	printf("|%-20s", "ID");
 	printf("|%-20s\n", db->tabs[index].name);
 	printf("----------------------------------------\n");
-	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
-	{
-		if (db->tabs[i].name[0] != 0)
+	for (unsigned int i = 0; i < db->last_id; i++)
 			printf("|%-20d|%-20s|\n", i + 1, db->tabs[index].data[i].data);
-	}
 	printf("----------------------------------------\n");
 }
 

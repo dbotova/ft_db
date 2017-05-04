@@ -40,20 +40,23 @@ void create_newdb(t_db *db)
 
 int main (void)
 {
-	int user_input = 0;
+	char user_input[10];
+	int flag = 0;
 	t_db *db = NULL;
 
-	system("clear");
 	while (42)
 	{
-		print_mmenu();
-		scanf("%d", &user_input);
-		if (user_input == 1)
+		system("clear");
+		print_mmenu(flag);
+		scanf("%s", user_input);
+		if (!strcmp(user_input, "1"))
 			create_newdb(db);
-		if (user_input == 2)
+		else if (!strcmp(user_input, "2"))
 			open_db(db);
-		if (user_input == 3)
+		else if (!strcmp(user_input, "3"))
 			return (0);
+		else 
+			flag = 1;
 	}
 	return (0);
 }
