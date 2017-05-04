@@ -24,6 +24,7 @@ t_db *init_db(void)
 
 void new_cell(t_cell *new, unsigned int id, char *data)
 {
+	memset(new->data, 0, sizeof(char) * BUFF_LEN);
 	strcat(new->data, data);
 	new->id = id;
 }

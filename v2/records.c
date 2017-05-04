@@ -12,15 +12,9 @@
 
 #include "ft_db.h"
 
-void print_tabs(t_db *db)
-{	
-	if (db->count == 0)
-	{
-		TAB_DELIMETR;
-		printf("|%35s%-22s|\n", "***EMPTY***", "");
-		TAB_DELIMETR;
-		return ;
-	}
+
+static void print_tab_header(t_db *db)
+{
 	for (unsigned int i = 0; i <= db->count; i++)
 		printf("--------------------");
 	printf("-\n");
@@ -34,6 +28,18 @@ void print_tabs(t_db *db)
 	for (unsigned int i = 0; i <= db->count; i++)
 		printf("--------------------");
 	printf("-\n");
+}
+
+void print_tabs(t_db *db)
+{	
+	if (db->count == 0)
+	{
+		TAB_DELIMETR;
+		printf("|%35s%-22s|\n", "***EMPTY***", "");
+		TAB_DELIMETR;
+		return ;
+	}
+	print_tab_header(db);
 	print_records(db);
 }
 
@@ -82,15 +88,18 @@ void add_record_to_db(t_db *db)
 {
 	db->last_id++;
 
-	for (unsigned int i = 0; i < db->count; i++)
+	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
 	{
-		char *data = (char*)malloc(sizeof(char) * BUFF_LEN);
+		if (db->tabs[i].name[0] != 0)
+		{
+			char *data = (char*)malloc(sizeof(char) * BUFF_LEN);
+			
+			printf("Enter data for [%s] table: ", db->tabs[i].name);
+			scanf("%s", data);
 
-		printf("Enter data for [%s] table: ", db->tabs[i].name);
-		scanf("%s", data);
-
-		add_cell(db, db->last_id, data, i);
-		SMART_FREE(data);
+			add_cell(db, db->last_id, data, i);
+			SMART_FREE(data);
+		}
 	}
 	
 }
@@ -100,19 +109,6 @@ void print_record(t_db *db, long long index)
 	if (index < 0)
 		return ;
 	
-	for (unsigned int i = 0; i <= db->count; i++)
-		printf("--------------------");
-	printf("-\n");
-	printf("|%-19s", "ID");
-	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
-	{
-		if (db->tabs[i].name[0] != 0)
-			printf("|%-19s", db->tabs[i].name);
-	}
-	printf("|\n");
-	for (unsigned int i = 0; i <= db->count; i++)
-		printf("--------------------");
-	printf("-\n");
 	printf("|%-20lld", index + 1);
 	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
 	{
@@ -167,6 +163,7 @@ void search_record(t_db *db)
 
 	unsigned int key = hash(term);
 	long long index = -1;
+	print_tab_header(db);
 	for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
 	{
 		if (db->tabs[i].map[key].name[0] != 0 && strcmp(db->tabs[i].map[key].name, term) == 0)
