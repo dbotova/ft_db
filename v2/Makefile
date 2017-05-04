@@ -23,7 +23,7 @@ HEADERS =	ft_db.h
 
 CFLAGS += 	-Wall -Werror -Wextra
 
-NAME =		meowdb
+NAME =		ft_db
 
 all: $(NAME)
 

@@ -15,7 +15,7 @@
 
 static void print_tab_header(t_db *db)
 {
-	for (unsigned int i = 0; i <= db->count; i++)
+	for (unsigned int i = 0; i <= db->filled; i++)
 		printf("--------------------");
 	printf("-\n");
 	printf("|%-19s", "ID");
@@ -25,14 +25,14 @@ static void print_tab_header(t_db *db)
 			printf("|%-19s", db->tabs[i].name);
 	}
 	printf("|\n");
-	for (unsigned int i = 0; i <= db->count; i++)
+	for (unsigned int i = 0; i <= db->filled; i++)
 		printf("--------------------");
 	printf("-\n");
 }
 
 void print_tabs(t_db *db)
 {	
-	if (db->count == 0)
+	if (db->filled == 0)
 	{
 		TAB_DELIMETR;
 		printf("|%35s%-22s|\n", "***EMPTY***", "");
@@ -55,7 +55,7 @@ void print_records(t_db *db)
 		}
 		printf("|\n");
 	}
-	for (unsigned int i = 0; i <= db->count; i++)
+	for (unsigned int i = 0; i <= db->filled; i++)
 		printf("--------------------");
 	printf("-\n");
 }
@@ -128,7 +128,7 @@ void print_record(t_db *db, long long index)
 			printf("|%-19s", db->tabs[i].data[index].data);
 	}
 	printf("|\n");
-	for (unsigned int i = 0; i <= db->count; i++)
+	for (unsigned int i = 0; i <= db->filled; i++)
 		printf("--------------------");
 	printf("-\n");
 

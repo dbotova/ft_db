@@ -12,63 +12,6 @@
 
 #include "ft_db.h"
 
-void print_debugmenu(t_db *db)
-{
-	int user_input = 0;
-
-	while (42)
-	{
-		printf("\n");
-		print_tabs(db);
-
-		printf("\n\n");
-		printf("%-13s", "[HASH (1)]");
-		printf("%-15s", "[DB STRUCT (2)]");
-		printf("%-15s", "[SHOW TABS (3)]");
-		printf("%-12s", "[BACK (4)]");
-		printf("%-13s\n", "[EXIT (5)]");
-		printf("\n\n");
-		printf(PROMPT1);
-
-		scanf("%d", &user_input);
-		if (user_input == 1)
-		{
-			char *tmp = (char*)malloc(sizeof(char) * BUFF_LEN);
-			scanf("%s", tmp);
-			printf("%u\n", hash(tmp));
-		}
-		if (user_input == 2)
-		{
-			printf("count: %u\n", db->count);
-			printf("last_id: %u\n", db->last_id);
-		}
-		if (user_input == 3)
-		{
-			printf("count: %u\n", db->count);
-			printf("last_id: %u\n", db->last_id);
-
-			for (unsigned int i = 0; i < DICTIONARY_SIZE; i++)
-			{
-				if (db->tabs[i].name[0] != 0)
-				{
-					printf("TAB: %s\n", db->tabs[i].name);
-					for (unsigned int j = 0; j < DICTIONARY_SIZE; j++)
-						printf("id: %u data: %s\n", db->tabs[i].data[j].id, db->tabs[i].data[j].data);
-				}
-			}
-
-			printf("\n");
-		}
-		if (user_input == 4)
-			return ;
-		if (user_input == 5)
-		{
-			if (db)
-				db = NULL;
-			exit (0);
-		}
-	}
-}
 
 void print_search_menu(t_db *db)
 {
@@ -127,12 +70,13 @@ void print_dbmenu(t_db *db, char *db_name)
 		printf("%-20s", "[ADD TAB(1)]");
 		printf("%-20s", "[ADD TO TABLE(2)]");
 		printf("%-20s", "[DELETE TAB(3)]");
+		printf("%-20s\n", "[DELETE RECORD (33)]");
 		printf("%-20s\n", "[ADD RECORD(4)]");
 		printf("%-20s", "[SEARCH(5)]");
 		printf("%-20s", "[EXPORT (6)]");
 		printf("%-20s", "[BACK (7)]");
 		printf("%-20s\n", "[EXIT (8)]");
-		printf("\n%s\n", "[DEBUG (0)]");
+		printf("\n%s\n", "[LIKE (9)]");
 		printf("\n\n");
 		(!flag) ? printf(PROMPT1) : printf(PROMPT2); 
 
@@ -150,6 +94,14 @@ void print_dbmenu(t_db *db, char *db_name)
 		else if (!strcmp(user_input, "3"))
 		{
 			delete_tab(db);
+			flag = 0;
+		}
+		else if (!strcmp(user_input, "33"))
+		{
+			int id = 0;
+			printf("Enter id: ");
+			scanf("%d", &id);
+			deleteID(db, id);
 			flag = 0;
 		}
 		else if (!strcmp(user_input, "4"))
@@ -181,9 +133,13 @@ void print_dbmenu(t_db *db, char *db_name)
 		}
 		else if (!strcmp(user_input, "9"))
 		{
-			system("clear");
-			print_debugmenu(db);
-			flag = 0;
+			printf("HAVE YOU CHECK ALL OUR AWESOME FEATURES (y/n)?\n");
+			scanf("%s", user_input);
+			if (!strcmp(user_input, "y"))
+			{
+				system("open https://youtu.be/5AtkWnBjGBU?t=88");
+				flag = 0;
+			}
 		}
 		else 
 			flag = 1;

@@ -23,7 +23,7 @@
 # define NOT_DONE {printf("UNDER IMPLEMENTATION\n"); sleep(2);}
 # define BUFF_LEN 20
 # define TAB_DELIMETR printf("-----------------------------------------------------------\n")
-# define DICTIONARY_SIZE 1000
+# define DICTIONARY_SIZE 10
 # define MAGIC_NUMBER 42
 
 typedef struct 		s_map
@@ -51,6 +51,7 @@ typedef struct		s_db
 	t_tab 			tabs[DICTIONARY_SIZE];
 	t_map 			map[DICTIONARY_SIZE];
 	unsigned int 	count;
+	unsigned int	filled;
 	unsigned int 	last_id;
 }					t_db;
 
@@ -66,6 +67,7 @@ void search_record(t_db *db);
 void search_tab(t_db *db);
 void print_tab(t_db *db, long long index);
 void print_record(t_db *db, long long index);
+void deleteID(t_db *db, unsigned int id);
 
 t_db *init_db(void);
 void new_cell(t_cell *new, unsigned int id, char *data);
@@ -78,7 +80,6 @@ void print_records(t_db *db);
 void print_dbmenu(t_db *db, char *db_name);
 void print_mmenu(int flag);
 
-void print_debugmenu(t_db *db);
 unsigned int hash(char *message);
 
 #endif

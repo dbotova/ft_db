@@ -17,6 +17,7 @@ t_db *init_db(void)
 	t_db *new = (t_db*)malloc(sizeof(t_db));
 	new->last_id = 0;
 	new->count = 0;
+	new->filled = 0;
 	memset(&new->map, 0, sizeof(t_map));
 
 	return (new);

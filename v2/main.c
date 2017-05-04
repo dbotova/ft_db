@@ -50,9 +50,15 @@ int main (void)
 		print_mmenu(flag);
 		scanf("%s", user_input);
 		if (!strcmp(user_input, "1"))
+		{
 			create_newdb(db);
+			flag = 0;
+		}
 		else if (!strcmp(user_input, "2"))
+		{
 			open_db(db);
+			flag = 0;
+		}
 		else if (!strcmp(user_input, "3"))
 			return (0);
 		else 
