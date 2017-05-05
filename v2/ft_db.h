@@ -15,6 +15,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
+# include <ctype.h>
 # include <sys/stat.h>
 # include <unistd.h>
 # define SMART_FREE(x) {free(x); x = NULL;}
@@ -23,7 +24,7 @@
 # define NOT_DONE {printf("UNDER IMPLEMENTATION\n"); sleep(2);}
 # define BUFF_LEN 20
 # define TAB_DELIMETR printf("-----------------------------------------------------------\n")
-# define DICTIONARY_SIZE 10
+# define DICTIONARY_SIZE 10000
 # define MAGIC_NUMBER 42
 
 typedef struct 		s_map
@@ -58,6 +59,8 @@ typedef struct		s_db
 
 void create_tab(t_db *db);
 void delete_tab(t_db *db);
+void open_db(t_db *db);
+void create_newdb(t_db *db);
 
 void serialize_db(t_db *db, char *filename);
 t_db *deserialize_db(t_db *db, char *path);
@@ -67,7 +70,8 @@ void search_record(t_db *db);
 void search_tab(t_db *db);
 void print_tab(t_db *db, long long index);
 void print_record(t_db *db, long long index);
-void deleteID(t_db *db, unsigned int id);
+void print_tab_header(t_db *db);
+void deleteID(t_db *db, char *tab_name);
 
 t_db *init_db(void);
 void new_cell(t_cell *new, unsigned int id, char *data);
@@ -81,5 +85,6 @@ void print_dbmenu(t_db *db, char *db_name);
 void print_mmenu(int flag);
 
 unsigned int hash(char *message);
+int read_input(char **str);
 
 #endif

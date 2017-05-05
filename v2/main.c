@@ -12,57 +12,43 @@
 
 #include "ft_db.h"
 
-void open_db(t_db *db)
-{
-	char *db_name = (char *)malloc(sizeof(char) * BUFF_LEN);
-	printf("Enter a name: ");
-	scanf("%s", db_name);
-	db = deserialize_db(db, db_name);
-
-	if(!db)
-		printf("FAIL\n");
-
-	print_dbmenu(db, db_name);
-	
-	SMART_FREE(db_name);
-}
-
-void create_newdb(t_db *db)
-{
-	char *db_name = (char *)malloc(sizeof(char) * BUFF_LEN);
-
-	printf("Enter a name for your database: ");
-	scanf("%s", db_name);
-	print_dbmenu(db, db_name);
-	
-	SMART_FREE(db_name);
-}
+// void 	termsAndConditions(char *user_input)
+// {
+// 	printf("		YOU AGREE WITH FOLLOWING TERMS AND CONDITIONS\n \
+// 	 	THAT ALL THE DATA YOU ENTER TO OUR DATABASE WILL \n \
+// 	 	NOT INLCUDE THE	FOLLWING CHARACTERS:\n \
+// 		- SPACE;\n \
+// 		- NEW LINE;\n \
+// 		- TAB LINE;\n\n \
+// 		[ENTER (1) FOR YES]\n \
+// 		[PRESS ANY KEY TO EXIT]\n");
+// 	read_input(&user_input);
+// 	if(strcmp(user_input, "1"))
+// 		exit(1);
+// }
 
 int main (void)
 {
-	char user_input[10];
+	char *user_input = (char*)malloc(sizeof(char) * BUFF_LEN);
 	int flag = 0;
 	t_db *db = NULL;
 
+	// termsAndConditions(user_input);
 	while (42)
 	{
 		system("clear");
 		print_mmenu(flag);
-		scanf("%s", user_input);
+		flag = 0;
+		read_input(&user_input);
 		if (!strcmp(user_input, "1"))
-		{
 			create_newdb(db);
-			flag = 0;
-		}
 		else if (!strcmp(user_input, "2"))
-		{
 			open_db(db);
-			flag = 0;
-		}
 		else if (!strcmp(user_input, "3"))
-			return (0);
+			break ;
 		else 
 			flag = 1;
 	}
+	SMART_FREE(user_input);
 	return (0);
 }
