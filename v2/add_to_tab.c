@@ -44,7 +44,7 @@ void add_record_to_tab(t_db *db)
 	long long i;
 
 	i = saveTab(db, tab_name);
-	if (!i)
+	if (i == -1)
 		return ;
 	printf("Enter data: ");
 	read_input(&data);

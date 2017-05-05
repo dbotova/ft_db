@@ -21,6 +21,6 @@ int read_input(char **str)
 	if (len <= 0)
 		return (-1);
 
-	*str[--len] = 0;
+	(*str)[--len] = 0;
 	return (0);
 }

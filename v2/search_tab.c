@@ -17,7 +17,7 @@ void search_tab(t_db *db)
 	char *term = (char*)malloc(sizeof(char) * BUFF_LEN);
 	unsigned int key = 0;
 
-	printf("Enter column name: (0 to cancel) ");
+	printf("Enter column name: (0 to cancel)\n");
 	while (42)
 	{
 		read_input(&term);

@@ -14,7 +14,7 @@
 
 void print_search_menu(t_db *db)
 {
-	char user_input[BUFF_LEN] = {0};
+	char *user_input = (char*)malloc(sizeof(char) * BUFF_LEN);
 	int flag = 0;
 
 	while (42)
@@ -29,7 +29,8 @@ void print_search_menu(t_db *db)
 		printf("\n\n");
 		(!flag) ? printf(PROMPT1) : printf(PROMPT2);
 		flag = 0;
-		scanf("%s", user_input);
+		read_input(&user_input);
+		//scanf("%s", user_input);
 		if (!strcmp(user_input, "1"))
 			search_record(db);
 		else if (!strcmp(user_input, "2"))
@@ -40,11 +41,13 @@ void print_search_menu(t_db *db)
 		{
 			if (db)
 				db = NULL;
+			SMART_FREE(user_input);
 			exit (0);
 		}
 		else
 			flag = 1;
 	}
+	SMART_FREE(user_input);
 }
 
 static int 	checkMenuEntry(t_db *db, char *db_name)
@@ -115,19 +118,19 @@ void print_dbmenu(t_db *db, char *db_name)
 		printf("%-20s\n", "[EXIT (8)]");
 		printf("\n%s\n", "[LIKE (9)]");
 		printf("\n\n");
+		(!flag) ? printf(PROMPT1) : printf(PROMPT2); 
+		flag = checkMenuEntry(db, db_name);
 		if (flag == -1)
 			return ;
-		(flag == 1) ? printf(PROMPT2) : printf(PROMPT1); 
-		flag = checkMenuEntry(db, db_name);
 	}
 }
 
-void print_mmenu(int flag)
+void print_mmenu(void)
 {
 	printf("\n\n");
 	printf("%-25s", "[CREATE NEW DB (1)]");
 	printf("%-32s", "[OPEN FROM FILE (2)]");
 	printf("%s\n", "[EXIT (3)]");
 	printf("\n\n");
-	(!flag) ? printf(PROMPT1) : printf(PROMPT2);
+	// (!flag) ? printf(PROMPT1) : printf(PROMPT2);
 }

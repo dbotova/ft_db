@@ -12,32 +12,17 @@
 
 #include "ft_db.h"
 
-// void 	termsAndConditions(char *user_input)
-// {
-// 	printf("		YOU AGREE WITH FOLLOWING TERMS AND CONDITIONS\n \
-// 	 	THAT ALL THE DATA YOU ENTER TO OUR DATABASE WILL \n \
-// 	 	NOT INLCUDE THE	FOLLWING CHARACTERS:\n \
-// 		- SPACE;\n \
-// 		- NEW LINE;\n \
-// 		- TAB LINE;\n\n \
-// 		[ENTER (1) FOR YES]\n \
-// 		[PRESS ANY KEY TO EXIT]\n");
-// 	read_input(&user_input);
-// 	if(strcmp(user_input, "1"))
-// 		exit(1);
-// }
-
 int main (void)
 {
 	char *user_input = (char*)malloc(sizeof(char) * BUFF_LEN);
 	int flag = 0;
 	t_db *db = NULL;
 
-	// termsAndConditions(user_input);
 	while (42)
 	{
 		system("clear");
-		print_mmenu(flag);
+		print_mmenu();
+		(!flag) ? printf(PROMPT1) : printf(PROMPT2);
 		flag = 0;
 		read_input(&user_input);
 		if (!strcmp(user_input, "1"))

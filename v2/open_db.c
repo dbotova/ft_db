@@ -19,9 +19,6 @@ void open_db(t_db *db)
 	scanf("%s", db_name);
 	db = deserialize_db(db, db_name);
 
-	if(!db)
-		printf("FAIL\n");
-
 	print_dbmenu(db, db_name);
 	
 	SMART_FREE(db_name);

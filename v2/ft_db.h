@@ -24,7 +24,7 @@
 # define NOT_DONE {printf("UNDER IMPLEMENTATION\n"); sleep(2);}
 # define BUFF_LEN 20
 # define TAB_DELIMETR printf("-----------------------------------------------------------\n")
-# define DICTIONARY_SIZE 10000
+# define DICTIONARY_SIZE 1000
 # define MAGIC_NUMBER 42
 
 typedef struct 		s_map
@@ -82,7 +82,7 @@ void add_cell(t_db *db, unsigned int id, char *data, unsigned int idx);
 void print_tabs(t_db *db);
 void print_records(t_db *db);
 void print_dbmenu(t_db *db, char *db_name);
-void print_mmenu(int flag);
+void print_mmenu(void);
 
 unsigned int hash(char *message);
 int read_input(char **str);

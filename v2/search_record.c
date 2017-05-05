@@ -16,7 +16,7 @@ void search_record(t_db *db)
 {
 	char *term = (char*)malloc(sizeof(char) * BUFF_LEN);
 
-	printf("Enter cell data: ");
+	printf("Enter cell data:\n");
 	read_input(&term);
 
 	unsigned int key = hash(term);
